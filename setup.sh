@@ -16,7 +16,7 @@ nano ./.env
 . ./.env
 
 docker compose build --pull
-docker compoe pull
+docker compose pull
 
 docker compose run --rm rclone config
 
