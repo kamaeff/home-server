@@ -31,7 +31,7 @@ for directory in /bin/cron_scripts/*; do
         
         crontab_="${crontime} ${script_file} >/proc/1/fd/1 2>/proc/1/fd/2"
         echo "adding crontab:\n${crontab_}"
-        echo "${crontab_}" | crontab
+        echo "${crontab_}" | crontab -
     done
 done
 
