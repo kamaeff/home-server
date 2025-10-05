@@ -20,7 +20,7 @@ fi
 for directory in /bin/cron_scripts/*; do
     for script_name in "${directory}/"*.sh; do
         # launching script now
-        script_file = "$(readlink -f "${script_name}")"
+        script_file="$(readlink -f "${script_name}")"
         echo "execuing ${script_file}"
         chmod +x "${script_file}"
         "${script_file}"
