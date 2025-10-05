@@ -30,7 +30,7 @@ services:
     volumes:
       - ./common/rclone/volumes/state/config/:/config/rclone/
       
-      - ./services/vw/volumes/config/rclone_cron:/bin/cron_scripts/vaultwarden
-      - ./services/vw/volumes/state/backup:/vaultwarden
+      - ./services/vw/volumes/config/rclone_cron:/bin/cron_scripts/vaultwarden:ro
+      - ./services/vw/volumes/state/backup:/vaultwarden:ro
     environment:
       - HEALTHCHECKS_URL_RCLONE_VW_BACKUP=${HEALTHCHECKS_URL_RCLONE_VW_BACKUP}
