@@ -61,3 +61,8 @@ Use `docker compose pull <image-name>` to pull separate images.
 - Check if you need to add some environment variables in `.env` and `.env.example`
 - Check if additional steps need to be added to `setup.sh`.
 - Check if .gitignore needs to be updated
+
+
+## backups
+Separate services may back up using rclone.  
+You always can just tar the while `~/home-server` and untar it on a new machine.  
