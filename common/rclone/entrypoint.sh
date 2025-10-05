@@ -30,11 +30,11 @@ for directory in /bin/cron_scripts/*; do
         crontime="$(grep -v '^#' "${crontime_file}" | tr -d '\n')"
         crontab_entry="${crontime} ${script_file} >/proc/1/fd/1 2>/proc/1/fd/2"
         crontab_="${crontab_}\n${crontab_entry}"
-        echo "going to add crontab:\n${crontab_}"
+        echo "going to add crontab:\n${crontab_entry}"
     done
 done
 echo "adding crontab entries"
-echo "${crontab_}" | crontab -
+echo -ne "${crontab_}\n" | crontab -
 
 echo "current crontab contents:"
 crontab -l
