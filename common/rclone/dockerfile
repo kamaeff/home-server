@@ -1,7 +1,8 @@
-FROM alpine/curl AS alpine-curl
-
 FROM rclone/rclone:latest
-COPY --from=alpine-curl /usr/bin/curl /usr/bin/curl
+
+RUN apk update
+# RUN apk add busybox-extras
+RUN apk add curl
 
 RUN [ "mkdir", "-p", "/config/rclone_example" ]
 COPY rclone.conf /config/rclone_example/rclone.conf
