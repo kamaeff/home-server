@@ -1,4 +1,4 @@
-FROM alpine-alpine/curl AS alpine-curl
+FROM alpine/curl AS alpine-curl
 
 FROM rclone/rclone:latest
 COPY --from=alpine-curl /usr/bin/curl /usr/bin/curl
