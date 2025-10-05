@@ -1,0 +1,36 @@
+include:
+  - path: ./services/owui/docker-compose.yml
+    env_file: .env
+  - path: ./services/vw/docker-compose.yml
+    env_file: .env
+
+services:
+  caddy:
+    build: ./common/caddy
+    # image: caddy:cloudflare
+    container_name: caddy
+    restart: unless-stopped
+    networks:
+      - vw
+      - owui
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./common/caddy/volumes/config/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./common/caddy/volumes/state/config:/config
+      - ./common/caddy/volumes/state/data:/data
+    environment:
+      CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN}
+      SERVICE_DOMAIN: ${SERVICE_DOMAIN}
+
+  rclone:
+    build: ./common/rclone
+    restart: on-failure:15
+    volumes:
+      - ./common/rclone/volumes/state/config/:/config/rclone/
+      
+      - ./services/vw/volumes/config/rclone_cron:/bin/cron_scripts/vaultwarden
+      - ./services/vw/volumes/state/backup:/vaultwarden
+    environment:
+      - HEALTHCHECKS_URL_RCLONE_VW_BACKUP=${HEALTHCHECKS_URL_RCLONE_VW_BACKUP}

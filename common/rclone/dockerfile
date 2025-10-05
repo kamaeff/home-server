@@ -1,0 +1,15 @@
+FROM rclone/rclone:latest
+
+COPY cron_scripts /bin/cron_scripts
+RUN for script in /bin/cron_scripts/*.sh; do chmod +x script; done
+# assuming rclone will always be based on alpine
+COPY crontab_root /var/spool/cron/crontabs/root
+
+
+RUN [ "mkdir", "/config/rclone_example" ]
+COPY rclone.conf /config/rclone_example/rclone.conf
+
+COPY entrypoint.sh /bin/entrypoint.sh
+RUN [ "chmod", "+x", "/bin/entrypoint.sh" ]
+
+ENTRYPOINT [ "/bin/entrypoint.sh" ]

@@ -1,0 +1,44 @@
+services:
+  vw:
+    image: vaultwarden/server:latest
+    container_name: vw
+    restart: unless-stopped
+    networks:
+      - vw
+    expose:
+      - 80
+    environment:
+      - SIGNUPS_ALLOWED=false
+      - PUSH_ENABLED=true
+      - PUSH_INSTALLATION_ID=${VW_PUSH_INSTALLATION_ID}
+      - PUSH_INSTALLATION_KEY=${VW_PUSH_INSTALLATION_KEY}
+      - EXPERIMENTAL_CLIENT_FEATURE_FLAGS=ssh-key-vault-item,ssh-agent
+    volumes:
+      - ./volumes/state/data:/data
+
+  vaultwarden-backup:
+    image: bruceforce/vaultwarden-backup
+    restart: on-failure
+    init: true
+    depends_on:
+      - vw
+    volumes:
+      - ./volumes/state/data:/data
+      - ./volumes/state/backup:/backup/
+
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - BACKUP_ON_STARTUP=true
+      - CRON_TIME=0 7 * * *
+      - DELETE_AFTER=60
+      - ENCRYPTION_PASSWORD=${VAULTWARDEN_BACKUP_ENCRYPTION_PASSWORD}
+      - TIMESTAMP=true
+      - BACKUP_DIR_PERMISSIONS=755
+      - LOG_LEVEL=DEBUG
+      - UID=0
+      - GID=0
+      - HEALTHCHECK_URL=${VAULTWARDEN_BACKUP_HC_URL}
+
+networks:
+  vw:
