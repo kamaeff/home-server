@@ -7,4 +7,4 @@ To enable uploading data of a service:
 - write rclone script in .sh file
 - write cron expression in .crontime file. Lines with comments should start with `#`. No inline comments allowed. 
 - add necessary environment variables to the global `.env` file
-- mount `rclone_cron` and your service's volumes as read only volumes to `rclone` service in global `docker-compose.yml`
+- mount `rclone_cron` as rw volume and your service's volume as read only volume to `rclone` service in global `docker-compose.yml`
