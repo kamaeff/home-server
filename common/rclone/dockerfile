@@ -1,6 +1,6 @@
 FROM rclone/rclone:latest
 
-RUN [ "mkdir", "/config/rclone_example" ]
+RUN [ "mkdir", "-p", "/config/rclone_example" ]
 COPY rclone.conf /config/rclone_example/rclone.conf
 
 COPY entrypoint.sh /bin/entrypoint.sh
