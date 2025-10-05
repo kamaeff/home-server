@@ -16,27 +16,28 @@ if [ "$1" == "config" ]; then
     exit "$?"
 fi
 
-
+crontab_="$(crontab -l)"
 for directory in /bin/cron_scripts/*; do
     for script_name in "${directory}/"*.sh; do
         # launching script now
         script_file="$(readlink -f "${script_name}")"
-        echo "execuing ${script_file}"
+        echo "executing ${script_file}"
         chmod +x "${script_file}"
         "${script_file}"
 
         # adding script to crontab with corresponding crontime
         crontime_file="${script_file%.*}".crontime
         crontime="$(grep -v '^#' "${crontime_file}" | tr -d '\n')"
-        
-        crontab_="${crontime} ${script_file} >/proc/1/fd/1 2>/proc/1/fd/2"
-        echo "adding crontab:\n${crontab_}"
-        echo "${crontab_}" | crontab -
+        crontab_entry="${crontime} ${script_file} >/proc/1/fd/1 2>/proc/1/fd/2"
+        crontab_="${crontab_}\n${crontab_entry}"
+        echo "going to add crontab:\n${crontab_}"
     done
 done
+echo "adding crontab entries"
+echo "${crontab_}" | crontab -
 
 echo "current crontab contents:"
 crontab -l
 
-# starting crond with [-l]og level 2 in [-f]oreground
+echo "starting crond with [-l]og level 2 in [-f]oreground"
 exec crond -l 2 -f
