@@ -13,4 +13,4 @@ services:
     restart: always
 
 networks:
-  owui
+  owui:

@@ -7,13 +7,13 @@ set -e
 DIRNAME="$(dirname "$(readlink -f "${0}")")"
 cd "${DIRNAME}"
 
-if ! [ -f .env ]; then
+if ! [ -f ./.env ]; then
     cp .env.example ./.env
 fi
-nano .env
+nano ./.env
 
 # populate environment
-. .env
+. ./.env
 
 docker compose build --pull
 docker compoe pull
