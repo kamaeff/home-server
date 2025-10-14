@@ -27,13 +27,36 @@ Each service contains `volumes` directory.
 - setup.sh may be used to rebuild locally-built images and pull latest images from hub.
 
 ### external access
-Fot external access install tailscale:
+For external access use tailscale. 
+
 ```sh
+# 1. Install
 curl -fsSL https://tailscale.com/install.sh | sh
-sudo tailscale set --advertise-exit-node --advertise-routes=192.168.31.0/24
+
+# 2. Enable ip forwarding
+# https://tailscale.com/kb/1019/subnets?tab=linux#enable-ip-forwarding
+if [ -d "/etc/sysctl.d" ]; then
+    __TAILSCALE_SYSCTL_FILE="/etc/sysctl.d/99-tailscale.conf"
+else
+    __TAILSCALE_SYSCTL_FILE="/etc/sysctl.conf"
+fi
+
+echo "Writing ip forwarding rules to ${__TAILSCALE_SYSCTL_FILE}"
+
+echo 'net.ipv4.ip_forward = 1' | sudo tee -a "${__TAILSCALE_SYSCTL_FILE}"
+echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a "${__TAILSCALE_SYSCTL_FILE}"
+sudo sysctl -p "${__TAILSCALE_SYSCTL_FILE}"
+
+unset __TAILSCALE_SYSCTL_FILE
+
+# 3. Sign in and run
 sudo tailscale up
+
+# 4. Enable subnet routing and exit node
+sudo tailscale set --advertise-exit-node --advertise-routes=192.168.31.0/24
+
 ```
-and then enable routing options from tailscale admin panel
+Then go to the [tailscale admin console](https://login.tailscale.com/admin/machines) and approve routing options for the machine.
 
 ## run
 `cd ~/home-server && docker compose up -d`
