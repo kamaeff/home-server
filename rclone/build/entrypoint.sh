@@ -46,4 +46,4 @@ for script_name in /cron-scripts/*.sh; do
 done
 
 echo "starting crond with [-l]og level 2 in [-f]oreground"
-exec crond -l 2 -f
+exec crond -d 2 -f

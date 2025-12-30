@@ -1,4 +1,4 @@
-# m    h    d    md    wd    command
+# m    h    d    M     wd    command
 0,30   *    *    *     *     /bin/sh /cron-scripts/i-am-alive.sh >/proc/1/fd/1 2>/proc/1/fd/2
 15     7    *    *     *     /bin/sh /cron-scripts/vw-backup.sh >/proc/1/fd/1 2>/proc/1/fd/2
 *      *    *    *     *     /bin/sh /cron-scripts/cron-test.sh >/proc/1/fd/1 2>/proc/1/fd/2
