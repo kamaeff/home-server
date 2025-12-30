@@ -22,7 +22,7 @@ echo
 echo "cron scripts:"
 ls -1 /cron-scripts
 
-for script_name in "${directory}/"*.sh; do
+for script_name in /cron-scripts/*.sh; do
     echo "running ${script_name}"
     CRON_SCRIPT_RUN_AT_STARTUP=1 /bin/sh "${script_name}"
 done
