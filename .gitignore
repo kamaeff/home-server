@@ -1,6 +1,2 @@
-/.env
-/.env.sh
-/**/volumes/state/*
-!/**/volumes/state/dummy
-
+/**/*.env
 .DS_Store
