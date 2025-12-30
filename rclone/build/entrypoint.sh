@@ -23,13 +23,15 @@ function crontab_is_up_to_date {
     local crontab_stat="$(stat -c "%a:%u:%g" "${DST_CRONTAB}")"
 
     # file contents are identical and permissions/owner/group are correct
-    cmp "${SRC_CRONTAB}" "${DST_CRONTAB}" && [ "${crontab_stat}" -eq "${valid_crontab_stat}" ]
+    cmp "${SRC_CRONTAB}" "${DST_CRONTAB}" && [ "${crontab_stat}" = "${valid_crontab_stat}" ]
 }
 
 if ! crontab_is_up_to_date; then
     echo "crontab isn't up to date"
     echo "copying '${SRC_CRONTAB}' into '${DST_CRONTAB}'"
     crontab "${SRC_CRONTAB}"
+else
+    echo "'${DST_CRONTAB}' is up to date"
 fi
 
 echo "crontab contents:"
