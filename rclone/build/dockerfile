@@ -4,8 +4,8 @@ RUN apk update
 # RUN apk add busybox-extras
 RUN apk add curl
 
-COPY rclone.conf.example rclone.conf.example
-COPY entrypoint.sh entrypoint.sh
-RUN [ "chmod", "+x", "entrypoint.sh" ]
+COPY rclone.conf.example /rclone.conf.example
+COPY entrypoint.sh /entrypoint.sh
+RUN [ "chmod", "+x", "/entrypoint.sh" ]
 
-ENTRYPOINT [ "entrypoint.sh" ]
+ENTRYPOINT [ "/entrypoint.sh" ]
