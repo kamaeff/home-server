@@ -1,0 +1,13 @@
+services:
+  rclone:
+    build: ./build
+    container_name: rclone
+    restart: on-failure:15
+    volumes:
+      - ./crontab:/etc/crontabs/root:ro
+      - ./cron-scripts:/cron-scripts:ro
+
+      - ${APP_DATA:?APP_DATA not set}/rclone/config/:/config/rclone/
+
+      - ${APP_DATA:?APP_DATA not set}/vw/backup:/vaultwarden:ro
+    env_file: rclone.env
