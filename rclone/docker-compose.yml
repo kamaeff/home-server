@@ -4,7 +4,7 @@ services:
     container_name: rclone
     restart: on-failure:15
     volumes:
-      - ./crontab:/etc/crontabs/root:ro
+      - ./crontab:/crontab:ro
       - ./cron-scripts:/cron-scripts:ro
 
       - ${APP_DATA:?APP_DATA not set}/rclone/config/:/config/rclone/

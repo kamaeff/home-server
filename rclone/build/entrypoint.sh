@@ -15,8 +15,24 @@ if [ "$1" == "config" ]; then
     exit "$?"
 fi
 
+SRC_CRONTAB=/crontab
+DST_CRONTAB=/etc/crontabs/root
 
-echo "current crontab contents:"
+function crontab_is_up_to_date {
+    local valid_crontab_stat='600:0:0'
+    local crontab_stat="$(stat -c "%a:%u:%g" "${DST_CRONTAB}")"
+
+    # file contents are identical and permissions/owner/group are correct
+    cmp "${SRC_CRONTAB}" "${DST_CRONTAB}" && [ "${crontab_stat}" -eq "${valid_crontab_stat}" ]
+}
+
+if ! crontab_is_up_to_date; then
+    echo "crontab isn't up to date"
+    echo "copying '${SRC_CRONTAB}' into '${DST_CRONTAB}'"
+    crontab "${SRC_CRONTAB}"
+fi
+
+echo "crontab contents:"
 crontab -l
 echo
 echo "cron scripts:"
