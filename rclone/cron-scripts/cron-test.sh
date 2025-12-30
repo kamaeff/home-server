@@ -1,0 +1,1 @@
+echo "cron test!"
