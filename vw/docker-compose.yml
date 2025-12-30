@@ -8,7 +8,8 @@ services:
     expose:
       - 80
     environment:
-      - SIGNUPS_ALLOWED=false PUSH_ENABLED=true
+      - SIGNUPS_ALLOWED=false
+      - PUSH_ENABLED=true
       - EXPERIMENTAL_CLIENT_FEATURE_FLAGS=ssh-key-vault-item,ssh-agent
     env_file: vw.env
     volumes:
