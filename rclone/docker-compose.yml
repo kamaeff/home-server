@@ -10,4 +10,7 @@ services:
       - ${APP_DATA:?APP_DATA not set}/rclone/config/:/config/rclone/
 
       - ${APP_DATA:?APP_DATA not set}/vw/backup:/vaultwarden:ro
+
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     env_file: rclone.env
