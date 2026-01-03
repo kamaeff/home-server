@@ -15,6 +15,14 @@ drive.{$SERVICE_DOMAIN} {
     reverse_proxy http://copyparty:3923
 }
 
+music.{$SERVICE_DOMAIN} {
+    import tls
+    # handle_path /picard/* {
+    #     reverse_proxy picard:5800
+    # }
+    reverse_proxy navidrome:4533
+}
+
 # chat.{$SERVICE_DOMAIN} {
 #     import tls
 #     reverse_proxy owui:8080
