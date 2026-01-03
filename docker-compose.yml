@@ -5,6 +5,8 @@ include:
     env_file: .env
   - path: rclone/docker-compose.yml
     env_file: .env
+  - path: copyparty/docker-compose.yml
+    env_file: .env
   # - path: owui/docker-compose.yml
   #   env_file: .env
 
