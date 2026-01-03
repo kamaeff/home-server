@@ -6,6 +6,7 @@ services:
     networks:
       - vw
       - copyparty
+      - navidrome
     ports:
       - 80:80
       - 443:443
