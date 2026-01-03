@@ -1,3 +1,7 @@
+#!/bin/sh
+
+set -e
+
 TEMPLATE_CONFIG_PATH=/copyparty.conf.template
 ORIGINAL_CONFIG_PATH=/cfg/copyparty.conf
 
@@ -21,7 +25,3 @@ if [ "${original_config_text}" != "${new_config_text}" ]; then
 else
     echo "Config '${ORIGINAL_CONFIG_PATH}' is up to date."
 fi
-
-unset TEMPLATE_CONFIG_PATH ORIGINAL_CONFIG_PATH new_config_text original_config_text
-
-exec python3 -m copyparty -c /z/initcfg
