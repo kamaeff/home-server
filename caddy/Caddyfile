@@ -12,7 +12,7 @@ vw.{$SERVICE_DOMAIN} {
 
 drive.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy copyparty:3923
+    reverse_proxy http://copyparty:3923
 }
 
 # chat.{$SERVICE_DOMAIN} {
