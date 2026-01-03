@@ -14,3 +14,4 @@ services:
       - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/music:ro"
     environment:
       - ND_ENABLEINSIGHTSCOLLECTOR=false
+      - ND_PID_ALBUM=albumartistid,album,albumversion,releasedate
