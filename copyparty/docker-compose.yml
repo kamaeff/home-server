@@ -13,7 +13,7 @@ services:
       - *fileshare
       - *config_template
     restart: on-failure:3
-    env_file: ./copyparty-update-config.env.example
+    env_file: ./copyparty-update-config.env
   
   copyparty:
     image: copyparty/dj:latest
