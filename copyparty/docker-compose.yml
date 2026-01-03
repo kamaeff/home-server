@@ -1,0 +1,46 @@
+x-volumes:
+  - &config ${APP_DATA:?APP_DATA not set}/copyparty/config:/cfg:z
+  - &fileshare ${FILESHARE_PATH:?FILESHARE_PATH not set}:/w:z
+  - &config_template ./copyparty.conf.template:/copyparty.conf.template:ro
+
+
+services:
+  copyparty-update-config:
+    build: ./build-copyparty-update-config
+    container_name: copyparty-update-config
+    volumes:
+      - *config
+      - *fileshare
+      - *config_template
+    restart: on-failure:3
+    env_file: ./copyparty-update-config.env.example
+  
+  copyparty:
+    image: copyparty/dj:latest
+    container_name: copyparty
+    depends-on:
+      copyparty-update-config: service_completed_successfully
+    networks:
+        - copyparty
+    restart: unless-stopped
+    user: "1000:1000"
+    volumes:
+      - *config
+      - *fileshare
+
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+
+    environment:
+      LD_PRELOAD: /usr/lib/libmimalloc-secure.so.NOPE # enable mimalloc by replacing "NOPE" with "2" for a nice speed-boost (will use twice as much ram)
+
+      PYTHONUNBUFFERED: 1 # ensures log-messages are not delayed (but can reduce speed a tiny bit)
+
+    stop_grace_period: 15s  # thumbnailer is allowed to continue finishing up for 10s after the shutdown signal
+    healthcheck:
+      # hide it from logs with "/._" so it matches the default --lf-url filter
+      test: ["CMD-SHELL", "wget --spider -q 127.0.0.1:3923/?reset=/._"]
+      interval: 1m
+      timeout: 2s
+      retries: 5
+      start_period: 15s

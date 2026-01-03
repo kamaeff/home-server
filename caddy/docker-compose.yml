@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     networks:
       - vw
+      - copyparty
     ports:
       - 80:80
       - 443:443

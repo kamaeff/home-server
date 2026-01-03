@@ -1,0 +1,36 @@
+# not actually YAML but lets pretend:
+# -*- mode: yaml -*-
+# vim: ft=yaml:
+
+
+[global]
+  e2dsa  # enable file indexing and filesystem scanning
+  e2ts   # enable multimedia indexing
+  ansi   # enable colors in log messages (both in logfiles and stdout)
+  daw    # enable proper WebDAV
+  u2ow: 1    # overwrite files on upload if same name and uploaded file is newer
+
+[accounts]
+  ${USER1NAME}:${USER1PASS}
+  ${USER2NAME}:${USER2PASS}
+
+[groups]
+  ${GROUP1NAME}:   ${USER1NAME}, ${USER2NAME}
+
+[/]
+  /w
+  accs:
+    r: @${GROUP1NAME}
+[/share]
+  /w/share
+  accs:
+    A: @${GROUP1NAME}
+    r: *
+[/${USER1NAME}]
+  /w/${USER1NAME}
+  accs:
+    A: ${USER1NAME}
+[/${USER2NAME}]
+  /w/${USER2NAME}
+  accs:
+    A: ${USER2NAME}

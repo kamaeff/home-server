@@ -1,15 +1,21 @@
-vw.{$SERVICE_DOMAIN} {
-    reverse_proxy vw:80
+(tls) {
     tls {
         dns cloudflare {$CLOUDFLARE_API_TOKEN}
         resolvers 1.1.1.1
     }
 }
 
+vw.{$SERVICE_DOMAIN} {
+    import tls
+    reverse_proxy vw:80
+}
+
+drive.{$SERVICE_DOMAIN} {
+    import tls
+    reverse_proxy copyparty:3923
+}
+
 # chat.{$SERVICE_DOMAIN} {
+#     import tls
 #     reverse_proxy owui:8080
-#     tls {
-#         dns cloudflare {$CLOUDFLARE_API_TOKEN}
-#         resolvers 1.1.1.1
-#     }
 # }
