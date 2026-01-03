@@ -1,0 +1,10 @@
+services:
+  picard:
+    container_name: picard
+    image: mikenye/picard:latest
+    restart: "no"
+    networks:
+        - picard
+    volumes:
+      - "${APP_DATA:?APP_DATA not set}/picard:/config:rw"
+      - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/storage:rw"

@@ -17,9 +17,9 @@ drive.{$SERVICE_DOMAIN} {
 
 music.{$SERVICE_DOMAIN} {
     import tls
-    # handle_path /picard/* {
-    #     reverse_proxy picard:5800
-    # }
+    handle_path /picard/* {
+        reverse_proxy picard:5800
+    }
     reverse_proxy navidrome:4533
 }
 

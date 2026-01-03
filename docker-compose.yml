@@ -16,4 +16,5 @@ networks:
   vw:
   copyparty:
   navidrome:
+  picard:
   # owui:
