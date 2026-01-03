@@ -19,7 +19,9 @@ services:
     image: copyparty/dj:latest
     container_name: copyparty
     depends_on:
-      copyparty-update-config: service_completed_successfully
+      copyparty-update-config:
+        condition: service_completed_successfully
+        restart: true
     networks:
         - copyparty
     restart: unless-stopped
