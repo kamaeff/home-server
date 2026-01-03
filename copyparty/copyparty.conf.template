@@ -9,6 +9,8 @@
   ansi   # enable colors in log messages (both in logfiles and stdout)
   daw    # enable proper WebDAV
   u2ow: 1    # overwrite files on upload if same name and uploaded file is newer
+  xff-src: lan
+  rproxy: 1
 
 [accounts]
   ${USER1NAME}:${USER1PASS}
