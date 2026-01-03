@@ -9,6 +9,8 @@ include:
     env_file: .env
   - path: navidrome/docker-compose.yml
     env_file: .env
+  - path: picard/docker-compose.yml
+    env_file: .env
   # - path: owui/docker-compose.yml
   #   env_file: .env
 
