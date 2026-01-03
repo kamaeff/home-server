@@ -1,5 +1,5 @@
 x-volumes:
-  - &config ${APP_DATA:?APP_DATA not set}/copyparty/config:/cfg:z
+  - &config ${APP_DATA:?APP_DATA not set}/copyparty:/cfg:z
   - &fileshare ${FILESHARE_PATH:?FILESHARE_PATH not set}:/w:z
   - &config_template ./copyparty.conf.template:/copyparty.conf.template:ro
 
