@@ -18,7 +18,7 @@ services:
   copyparty:
     image: copyparty/dj:latest
     container_name: copyparty
-    depends-on:
+    depends_on:
       copyparty-update-config: service_completed_successfully
     networks:
         - copyparty
