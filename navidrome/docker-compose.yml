@@ -1,0 +1,13 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    user: 1000:1000 # should be owner of volumes
+    restart: unless-stopped
+    networks:
+      - navidrome
+#     environment:
+      # Optional: put your config options customization here. Examples:
+      # ND_LOGLEVEL: debug
+    volumes:
+      - "${APP_DATA:?APP_DATA not set}/navidrome:/data"
+      - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/music:ro"
