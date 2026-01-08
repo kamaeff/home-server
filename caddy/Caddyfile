@@ -23,6 +23,11 @@ music.{$SERVICE_DOMAIN} {
     reverse_proxy navidrome:4533
 }
 
+photos.{$SERVICE_DOMAIN} {
+    import tls
+    reverse_proxy http://immich-server:2283
+}
+
 # chat.{$SERVICE_DOMAIN} {
 #     import tls
 #     reverse_proxy owui:8080

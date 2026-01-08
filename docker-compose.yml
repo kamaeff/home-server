@@ -1,9 +1,12 @@
 include:
+  # common services
   - path: caddy/docker-compose.yml
     env_file: .env
-  - path: vw/docker-compose.yml
-    env_file: .env
   - path: rclone/docker-compose.yml
+    env_file: .env
+  # /common services
+
+  - path: vw/docker-compose.yml
     env_file: .env
   - path: copyparty/docker-compose.yml
     env_file: .env
@@ -11,6 +14,10 @@ include:
     env_file: .env
   - path: picard/docker-compose.yml
     env_file: .env
+  - path: immich/docker-compose.yml
+    env_file:
+      - .env
+      - ./immich/.env
   # - path: owui/docker-compose.yml
   #   env_file: .env
 
@@ -19,4 +26,6 @@ networks:
   copyparty:
   navidrome:
   picard:
+  immich-front:
+  immich-back:
   # owui:
