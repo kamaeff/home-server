@@ -22,6 +22,8 @@ services:
       DB_PASSWORD: ${IMMICH_DB_PASSWORD}
       DB_USERNAME: ${IMMICH_DB_USERNAME}
       DB_DATABASE_NAME: ${IMMICH_DB_DATABASE_NAME}
+      DB_HOSTNAME: immich-database
+      REDIS_HOSTNAME: immich-redis
     expose:
       - '2283'
     depends_on:
@@ -35,7 +37,7 @@ services:
       disable: false
 
   immich-machine-learning:
-    container_name: immich-machine_learning
+    container_name: immich-machine-learning
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
     volumes:
       - ${APP_DATA:?APP_DATA not set}/immich/model-cache:/cache
@@ -55,7 +57,7 @@ services:
       - immich-back
 
   immich-database:
-    container_name: immich-postgres
+    container_name: immich-database
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23
     environment:
       POSTGRES_PASSWORD: ${IMMICH_DB_PASSWORD}
