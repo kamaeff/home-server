@@ -1,5 +1,7 @@
 services:
   picard:
+    profiles:
+      - do_not_start
     container_name: picard
     image: mikenye/picard:latest
     restart: "no"
