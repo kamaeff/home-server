@@ -17,6 +17,8 @@ services:
     volumes:
       - ${APP_DATA:?APP_DATA not set}/immich/library:/data
       - /etc/localtime:/etc/localtime:ro
+    devices:
+      - /dev/dri:/dev/dri
     environment:
       TZ: ${TZ}
       DB_PASSWORD: ${IMMICH_DB_PASSWORD}
@@ -38,9 +40,16 @@ services:
 
   immich-machine-learning:
     container_name: immich-machine-learning
-    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release} #-openvino
+# unkomment to enable OpenVINO hwaccel on Intel iGPU
+# currently disabled – OCR performance became lower, cpu became busier
+#     device_cgroup_rules:
+#       - 'c 189:* rmw'
+#     devices:
+#       - /dev/dri:/dev/dri
     volumes:
       - ${APP_DATA:?APP_DATA not set}/immich/model-cache:/cache
+#       - /dev/bus/usb:/dev/bus/usb
     restart: always
     networks:
       - immich-back
