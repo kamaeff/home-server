@@ -7,6 +7,8 @@
 # general
   name: nas-drive   # name displayed in web ui
   ansi              # enable colors in log messages (both in logfiles and stdout)
+  shr: /shared-links
+  shr-adm: @${GROUP1NAME}
 
 # file management
   e2dsa             # enable file indexing and filesystem scanning
