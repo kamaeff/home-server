@@ -18,6 +18,10 @@ include:
     env_file:
       - .env
       - ./immich/.env
+  - path: linkwarden/docker-compose.yml
+    env_file:
+      - .env
+      - ./linkwarden/.env
   # - path: owui/docker-compose.yml
   #   env_file: .env
 
@@ -28,4 +32,6 @@ networks:
   picard:
   immich-front:
   immich-back:
+  linkwarden-front:
+  linkwarden-back:
   # owui:

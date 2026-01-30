@@ -9,6 +9,8 @@ services:
       - navidrome
       - picard
       - immich-front
+      - linkwarden-front
+
     ports:
       - 80:80
       - 443:443

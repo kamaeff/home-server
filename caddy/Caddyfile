@@ -28,6 +28,11 @@ photos.{$SERVICE_DOMAIN} {
     reverse_proxy http://immich-server:2283
 }
 
+links.{$SERVICE_DOMAIN} {
+    import tls
+    reverse_proxy http://linkwarden-server:3000
+}
+
 # chat.{$SERVICE_DOMAIN} {
 #     import tls
 #     reverse_proxy owui:8080
