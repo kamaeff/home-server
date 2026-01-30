@@ -9,10 +9,10 @@ services:
     expose:
       - '3000'
     volumes:
-      - "${APP_DATA:?APP_DATA not set}/linkwarden/data:/data"
+      - "${APP_DATA:?APP_DATA not set}/linkwarden/data:/data/data"
     depends_on:
-      - postgres
-      - meilisearch
+      - linkwarden-postgres
+      - linkwarden-meilisearch
     networks:
       - linkwarden-front
       - linkwarden-back
