@@ -37,3 +37,5 @@ services:
       - "${APP_DATA:?APP_DATA not set}/linkwarden/meilisearch:/meili_data"
     networks:
       - linkwarden-back
+    expose:
+      - '7700'
