@@ -20,7 +20,7 @@ music.{$SERVICE_DOMAIN} {
     handle_path /picard/* {
         reverse_proxy picard:5800
     }
-    reverse_proxy navidrome-octo-fiesta:5274
+    reverse_proxy navidrome-octo-fiesta:8080
 }
 
 photos.{$SERVICE_DOMAIN} {
