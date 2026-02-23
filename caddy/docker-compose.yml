@@ -2,7 +2,7 @@ services:
   caddy:
     build: .
     container_name: caddy
-    restart: unless-stopped
+    restart: always
     networks:
       - vw
       - copyparty

@@ -2,7 +2,7 @@ services:
   vw:
     image: vaultwarden/server:latest
     container_name: vw
-    restart: unless-stopped
+    restart: always
     networks:
       - vw
     expose:

@@ -3,7 +3,7 @@ services:
     image: deluan/navidrome:latest
     container_name: navidrome
     user: 1000:1000 # should be owner of volumes
-    restart: unless-stopped
+    restart: always
     networks:
       - navidrome
 #     environment:
