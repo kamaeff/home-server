@@ -6,7 +6,7 @@ services:
     networks:
       - vw
       - copyparty
-      - navidrome
+      - navidrome-front
       - picard
       - immich-front
       - linkwarden-front

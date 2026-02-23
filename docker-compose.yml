@@ -28,7 +28,8 @@ include:
 networks:
   vw:
   copyparty:
-  navidrome:
+  navidrome-front:
+  navidrome-back:
   picard:
   immich-front:
   immich-back:

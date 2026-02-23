@@ -5,13 +5,29 @@ services:
     user: 1000:1000 # should be owner of volumes
     restart: always
     networks:
-      - navidrome
-#     environment:
-      # Optional: put your config options customization here. Examples:
-      # ND_LOGLEVEL: debug
+      - navidrome-back
+    expose:
+      - "4533"
     volumes:
       - "${APP_DATA:?APP_DATA not set}/navidrome:/data"
       - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/music:ro"
     environment:
+      # - ND_LOGLEVEL=debug
       - ND_ENABLEINSIGHTSCOLLECTOR=false
+      - ND_ENABLESHARING=true
       - ND_PID_ALBUM=albumartistid,album,albumversion,releasedate
+
+  navidrome-octo-fiesta:
+    image: ghcr.io/v1ck3s/octo-fiesta
+    container_name: navidrome-octo-fiesta
+    user: 1000:1000
+    restart: always
+    networks:
+      - navidrome-front
+      - navidrome-back
+    expose:
+      - "5274"
+    volumes:
+      - ${APP_DATA:?APP_DATA not set}/navidrome-octo-fiesta/downloads:/app/downloads
+    env_file:
+      - octo-fiesta.env
