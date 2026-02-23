@@ -5,7 +5,7 @@ services:
     user: 1000:1000 # should be owner of volumes
     restart: always
     networks:
-      - navidrome-back
+      - navidrome
     expose:
       - "4533"
     volumes:
@@ -25,8 +25,7 @@ services:
     user: 1000:1000
     restart: always
     networks:
-      - navidrome-front
-      - navidrome-back
+      - navidrome
     expose:
       - "8080"
     volumes:
