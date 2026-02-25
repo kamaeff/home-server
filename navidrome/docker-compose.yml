@@ -1,6 +1,3 @@
-x-volumes:
-  - &music_staging "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}:/music-staging"
-
 services:
   navidrome:
     image: deluan/navidrome:latest
@@ -14,7 +11,7 @@ services:
     volumes:
       - "${APP_DATA:?APP_DATA not set}/navidrome:/data"
       - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/music:ro"
-      - *music_staging
+      - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}:/music-staging"
     environment:
       # - ND_LOGLEVEL=debug
       - ND_ENABLEINSIGHTSCOLLECTOR=false
@@ -33,6 +30,6 @@ services:
     expose:
       - "8080"
     volumes:
-      - *music_staging
+      - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}/octo-fiesta:/app/downloads"
     env_file:
       - octo-fiesta.env
