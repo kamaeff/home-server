@@ -16,11 +16,16 @@ drive.{$SERVICE_DOMAIN} {
 }
 
 music.{$SERVICE_DOMAIN} {
+    @octo_fiesta_staging {
+        path /rest/*
+        query u=staging
+    }
+
     import tls
     handle_path /picard/* {
         reverse_proxy picard:5800
     }
-    handle /rest/* {
+    handle @octo_fiesta_staging {
         reverse_proxy navidrome-octo-fiesta:8080
     }
     reverse_proxy navidrome:4533
