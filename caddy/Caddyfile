@@ -15,20 +15,27 @@ drive.{$SERVICE_DOMAIN} {
     reverse_proxy http://copyparty:3923
 }
 
-music.{$SERVICE_DOMAIN} {
-    @octo_fiesta_staging {
-        path /rest/*
-        query u=staging
-    }
-
+picard.{$SERVICE_DOMAIN} {
     import tls
-    handle_path /picard/* {
-        reverse_proxy picard:5800
-    }
-    handle @octo_fiesta_staging {
+    reverse_proxy picard:5800
+}
+
+music.{$SERVICE_DOMAIN} {
+    import tls
+    reverse_proxy navidrome:4533
+}
+# separate domain for octo-fiesta
+# acts as a simple switch to easily toggle between
+# clean navidrome and octo-fiesta-powered navidrome API
+music2.{$SERVICE_DOMAIN} {
+    import tls
+    handle /rest/* {
         reverse_proxy navidrome-octo-fiesta:8080
     }
-    reverse_proxy navidrome:4533
+    # octo-fiesta should not intercept any other apis
+    handle {
+        reverse_proxy navidrome:4533
+    }
 }
 
 photos.{$SERVICE_DOMAIN} {
