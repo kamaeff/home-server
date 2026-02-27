@@ -9,5 +9,7 @@ services:
         - picard
     volumes:
       - "${APP_DATA:?APP_DATA not set}/picard:/config:rw"
+      - "./plugins/lrcget.py:/config/xdg/config/MusicBrainz/Picard/plugins/lrcget.py"
+
       - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/storage:rw"
-      - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}:/music-staging"
+      - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}:/music-staging:rw"
