@@ -2,6 +2,8 @@
 
 My docker-compose powered home server.  
 
+I decided to make this repo public so maybe someone will find something useful for their self hosting environment configuration. Or maybe someone could come here and tell me that I'm doing something catastrophically wrong.
+
 Russian and English languages are intermixed in this document because я заебался уже, старый readme был на английском, а новые заметки в obsidian я все писал на русском и уже слишком устал, чтобы переводить, учитывая, что в языке я не силён. 
 
 More raw details and some check lists are stored in obsidian in "Домашний сервер" folder.
@@ -15,6 +17,8 @@ All application data such as databases and mutable configs is stored inside `$AP
 `$APP_DATA` full path should be written to `.env` during setting everything up.
 
 External data like music library or file sharing folder can be placed outside of `$APP_DATA` for convenience.
+
+Every service can contain its own set of `.env` files. These files are represented as `*.env.example` files in the repo. Example files contain no secret info. They are copied to `*.env` files and populated with secret data during set up process. `*.env.example` files can contain persistent configuration that is not secret.
 
 
 ## common services
