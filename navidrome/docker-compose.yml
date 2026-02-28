@@ -19,9 +19,8 @@ services:
       - ND_PID_ALBUM=albumartistid,album,albumversion,releasedate
 
   navidrome-octo-fiesta:
-    # TODO: remove dev tag once SquidWTF is fixed in master
-    # https://github.com/V1ck3s/octo-fiesta/issues/124
-    image: ghcr.io/v1ck3s/octo-fiesta:141082a
+    # 415198f is releases/v0.6
+    image: ghcr.io/v1ck3s/octo-fiesta:415198f
     container_name: navidrome-octo-fiesta
     user: 1000:1000
     restart: always
