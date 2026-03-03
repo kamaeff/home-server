@@ -7,6 +7,9 @@ services:
     restart: "no"
     networks:
         - picard
+    ports:
+      # vnc access
+      - "6101:5900"
     volumes:
       - "${APP_DATA:?APP_DATA not set}/picard:/config:rw"
       - "./plugins/lrcget.py:/config/xdg/config/MusicBrainz/Picard/plugins/lrcget.py"
