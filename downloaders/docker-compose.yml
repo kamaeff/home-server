@@ -1,0 +1,20 @@
+services:
+  slskd:
+    image: slskd/slskd
+    container_name: slskd
+    user: 1000:1000
+    restart: always
+    networks:
+      - slskd
+    expose:
+      - "5030"
+#    unable to share behind cgnat :(
+#    ports:
+#      - "50300:50300"
+    env_file:
+      - slskd.env
+    volumes:
+      - "${APP_DATA:?APP_DATA not set}/slskd/app_data:/app"
+      - "${APP_DATA:?APP_DATA not set}/slskd/incomplete:/app/incomplete"
+      - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}/slskd:/app/downloads"
+

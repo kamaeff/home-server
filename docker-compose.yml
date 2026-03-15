@@ -14,6 +14,8 @@ include:
     env_file: .env
   - path: picard/docker-compose.yml
     env_file: .env
+  - path: downloaders/docker-compose.yml
+    env_file: .env
   - path: immich/docker-compose.yml
     env_file:
       - .env
@@ -30,6 +32,7 @@ networks:
   copyparty:
   navidrome:
   picard:
+  slskd:
   immich-front:
   immich-back:
   linkwarden-front:

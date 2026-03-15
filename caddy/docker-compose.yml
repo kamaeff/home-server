@@ -10,6 +10,7 @@ services:
       - picard
       - immich-front
       - linkwarden-front
+      - slskd
 
     ports:
       - 80:80

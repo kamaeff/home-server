@@ -15,6 +15,11 @@ drive.{$SERVICE_DOMAIN} {
     reverse_proxy http://copyparty:3923
 }
 
+slskd.{$SERVICE_DOMAIN} {
+    import tls
+    reverse_proxy slskd:5030
+}
+
 picard.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy picard:5800
