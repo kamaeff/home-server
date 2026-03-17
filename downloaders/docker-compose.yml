@@ -17,4 +17,4 @@ services:
       - "${APP_DATA:?APP_DATA not set}/slskd/app_data:/app"
       - "${APP_DATA:?APP_DATA not set}/slskd/incomplete:/app/incomplete"
       - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}/slskd:/app/downloads"
-
+      - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/slskd-shares/navidrome:ro"
