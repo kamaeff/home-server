@@ -19,8 +19,9 @@ services:
       - ND_PID_ALBUM=albumartistid,album,albumversion,releasedate
 
   navidrome-octo-fiesta:
-    # 415198f is releases/v0.6
-    image: ghcr.io/v1ck3s/octo-fiesta:415198f
+#     # 415198f is releases/v0.6
+    image: ghcr.io/v1ck3s/octo-fiesta:c52aebd
+#    build: https://github.com/kamaeff/octo-fiesta.git#feature/refactor-basedownloadservice
     container_name: navidrome-octo-fiesta
     user: 1000:1000
     restart: always
@@ -30,5 +31,6 @@ services:
       - "8080"
     volumes:
       - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}/octo-fiesta:/app/downloads"
+    tmpfs: /tmp
     env_file:
       - octo-fiesta.env
