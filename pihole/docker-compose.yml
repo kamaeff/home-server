@@ -12,7 +12,7 @@ services:
     expose:
       - "80"
     env_file:
-      - ".env.example"
+      - ".env"
     environment:
       FTLCONF_database_maxDBday: 0
       FTLCONF_dns_queryLogging: false
