@@ -11,6 +11,7 @@ services:
       - immich-front
       - linkwarden-front
       - slskd
+      - pihole
 
     ports:
       - 80:80

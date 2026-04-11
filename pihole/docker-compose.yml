@@ -1,0 +1,26 @@
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    networks:
+      - pihole
+    ports:
+      # DNS Ports
+      - "53:53/tcp"
+      - "53:53/udp"
+    expose:
+      - "80"
+    env_file:
+      - ".env.example"
+    environment:
+      FTLCONF_database_maxDBday: 0
+      FTLCONF_dns_queryLogging: false
+      FTLCONF_files_log_ftl: '/dev/null'
+      FTLCONF_files_log_dnsmasq: '/dev/null'
+      FTLCONF_files_log_webserver: '/dev/null'
+      # If using Docker's default `bridge` network setting the dns listening mode should be set to 'ALL'
+      FTLCONF_dns_listeningMode: 'ALL'
+    volumes:
+      - "${APP_DATA:?APP_DATA not set}/pihole:/etc/pihole"
+    restart: always

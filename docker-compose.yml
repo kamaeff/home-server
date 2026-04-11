@@ -24,6 +24,10 @@ include:
     env_file:
       - .env
       - ./linkwarden/.env
+  - path: pihole/docker-compose.yml
+    env_file:
+      - .env
+      - ./pihole/.env
   # - path: owui/docker-compose.yml
   #   env_file: .env
 
@@ -37,4 +41,5 @@ networks:
   immich-back:
   linkwarden-front:
   linkwarden-back:
+  pihole:
   # owui:
