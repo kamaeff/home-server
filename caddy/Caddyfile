@@ -52,6 +52,7 @@ links.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy http://linkwarden-server:3000
 }
+
 pihole.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy http://pihole:80
