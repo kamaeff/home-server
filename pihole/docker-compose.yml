@@ -16,9 +16,9 @@ services:
     environment:
       FTLCONF_database_maxDBday: 0
       FTLCONF_dns_queryLogging: false
-      FTLCONF_files_log_ftl: '/dev/null'
-      FTLCONF_files_log_dnsmasq: '/dev/null'
-      FTLCONF_files_log_webserver: '/dev/null'
+      # FTLCONF_files_log_ftl: '/dev/null'
+      # FTLCONF_files_log_dnsmasq: '/dev/null'
+      # FTLCONF_files_log_webserver: '/dev/null'
       # If using Docker's default `bridge` network setting the dns listening mode should be set to 'ALL'
       FTLCONF_dns_listeningMode: 'ALL'
     volumes:
