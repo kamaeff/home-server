@@ -23,7 +23,8 @@ services:
     image: linuxserver/transmission
     container_name: transmission
     user: 1000:1000
-    networks: transmission
+    networks:
+      - transmission
     expose:
       - "9091"
     ports:
