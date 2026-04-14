@@ -37,6 +37,7 @@ networks:
   navidrome:
   picard:
   slskd:
+  transmission:
   immich-front:
   immich-back:
   linkwarden-front:

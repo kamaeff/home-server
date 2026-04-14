@@ -18,3 +18,24 @@ services:
       - "${APP_DATA:?APP_DATA not set}/slskd/incomplete:/app/incomplete"
       - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}/slskd:/app/downloads"
       - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/slskd-shares/navidrome:ro"
+
+  transmission:
+    image: linuxserver/transmission
+    container_name: transmission
+    user: 1000:1000
+    networks: transmission
+    expose:
+      - "9091"
+    ports:
+      - 51413:51413/tcp
+      - 51413:51413/udp
+    environment:
+      - PUID=1000
+      - PGID=1000
+    env_file:
+      - transmission.env
+    volumes:
+      - "${APP_DATA:?APP_DATA not set}/transmission/:/config"
+      # - ""
+
+    restart: always

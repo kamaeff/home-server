@@ -20,6 +20,11 @@ slskd.{$SERVICE_DOMAIN} {
     reverse_proxy slskd:5030
 }
 
+torrents.{$SERVICE_DOMAIN} {
+    import tls
+    reverse_proxy transmission:9091
+}
+
 picard.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy picard:5800
@@ -57,6 +62,7 @@ pihole.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy http://pihole:80
 }
+
 # chat.{$SERVICE_DOMAIN} {
 #     import tls
 #     reverse_proxy owui:8080
