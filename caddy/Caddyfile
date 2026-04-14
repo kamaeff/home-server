@@ -22,8 +22,9 @@ slskd.{$SERVICE_DOMAIN} {
 
 torrents.{$SERVICE_DOMAIN} {
     import tls
-    header_up X-Real-IP {remote_host}
-    reverse_proxy transmission:9091
+    reverse_proxy transmission:9091 {
+        header_up X-Real-IP {remote_host}
+    }
 }
 
 picard.{$SERVICE_DOMAIN} {
