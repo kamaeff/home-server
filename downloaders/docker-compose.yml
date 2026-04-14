@@ -31,8 +31,7 @@ services:
       - 51413:51413/tcp
       - 51413:51413/udp
     environment:
-      - PUID=1000
-      - PGID=1000
+      - HOST_WHITELIST=caddy
     env_file:
       - transmission.env
     volumes:
