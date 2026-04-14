@@ -30,12 +30,10 @@ services:
     ports:
       - 51413:51413/tcp
       - 51413:51413/udp
-    environment:
-      - HOST_WHITELIST=caddy
     env_file:
       - transmission.env
     volumes:
       - "${APP_DATA:?APP_DATA not set}/transmission/:/config"
-      # - ""
-
+      - "${DOWNLOADS_PATH:?DOWNLOADS_PATH not set}/torrents/:/downloads"
+      # here can be added an optional watch directory
     restart: always
