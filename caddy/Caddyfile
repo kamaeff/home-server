@@ -27,6 +27,10 @@ torrents.{$SERVICE_DOMAIN} {
     }
 }
 
+http://ps4hb.{$SERVICE_DOMAIN} {
+    reverse_proxy ps4-hb-store:6449
+}
+
 picard.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy picard:5800

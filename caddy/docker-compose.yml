@@ -12,6 +12,7 @@ services:
       - linkwarden-front
       - slskd
       - transmission
+      - ps4-hb-store
       - pihole
 
     ports:
