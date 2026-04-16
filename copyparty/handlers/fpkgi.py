@@ -1,5 +1,6 @@
 # on404 handler
 # sends a custom response instead of the usual 404
+# from https://github.com/kamaeff/copyparty-dumb-fpkgi-handler/blob/master/fpkgi.py
 
 import json
 from pathlib import Path
