@@ -30,6 +30,8 @@ services:
       - *config
       - *fileshare
 
+      - ./handlers:/handlers
+
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
 

@@ -15,6 +15,19 @@ drive.{$SERVICE_DOMAIN} {
     reverse_proxy http://copyparty:3923
 }
 
+http://drive.{$SERVICE_DOMAIN} {
+    @fpkgi {
+        protocol http
+        path /fpkgi/*
+    }
+    handle @fpkgi {
+        reverse_proxy @fpkgi http://copyparty:3923
+    }
+    handle {
+        redir https://drive.{$SERVICE_DOMAIN}{uri} permanent
+    }
+}
+
 slskd.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy slskd:5030

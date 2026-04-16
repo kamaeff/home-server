@@ -44,3 +44,9 @@
   /w/${USER2NAME}
   accs:
     A: ${USER2NAME}
+[/fpkgi]
+  /w/${USER1NAME}/downloads
+  accs:
+    g: *
+  flags:
+    on404: /handlers/fpkgi.py
