@@ -2,10 +2,7 @@
 services:
   ps4-hb-store:
     container_name: ps4-hb-store
-    build:
-      context: build
-      args:
-        - HOST=ps4hb.${SERVICE_DOMAIN}
+    build: ./build
     networks:
       - ps4-hb-store
     expose:

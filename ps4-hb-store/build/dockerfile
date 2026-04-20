@@ -13,18 +13,14 @@ RUN npm run build:linux
 
 FROM debian:stable-slim
 
-ARG HOST
-ENV HOST $HOST
-
 RUN mkdir app
 WORKDIR /app
 
 COPY config.ini config.ini
-RUN echo "host=${HOST}\nport=80\nbasePath=/pkg\nbinVersion=0.00" > config.ini
 COPY --from=build /build/release/hb-store-cdn-cli-server main
 RUN ./main download-bin
 
-EXPOSE 80
+EXPOSE 6449
 
 RUN mkdir /pkg
 

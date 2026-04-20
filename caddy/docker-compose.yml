@@ -24,5 +24,3 @@ services:
       - ${APP_DATA:?APP_DATA not set}/caddy/config:/config
       - ${APP_DATA:?APP_DATA not set}/caddy/data:/data
     env_file: caddy.env
-    environment:
-      - SERVICE_DOMAIN=${SERVICE_DOMAIN}
