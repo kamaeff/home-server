@@ -16,8 +16,6 @@ include:
     env_file: .env
   - path: downloaders/docker-compose.yml
     env_file: .env
-  - path: ps4-hb-store/docker-compose.yml
-    env_file: .env
   - path: immich/docker-compose.yml
     env_file:
       - .env
@@ -42,7 +40,6 @@ networks:
   picard:
   slskd:
   transmission:
-  ps4-hb-store:
   immich-front:
   immich-back:
   linkwarden-front:
