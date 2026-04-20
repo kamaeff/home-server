@@ -1,0 +1,24 @@
+services:
+  borg:
+    build: ./build
+    container_name: borg
+    restart: on-failure:15
+    init: true
+    volumes:
+      # cron stuff
+      - ./crontab:/crontab:ro
+      - ./cron-scripts:/cron-scripts:ro
+      # borg config and cache
+      - ${APP_DATA:?APP_DATA not set}/borg/config:/root/.config/borg
+      - ${APP_DATA:?APP_DATA not set}/borg/cache:/root/.cache/borg
+      # data to back up
+      - ${APP_DATA:?APP_DATA not set}:/app-data:ro
+      - ${FILESHARE_PATH:?FILESHARE_PATH not set}:/fileshare:ro
+      # backup location
+      - ${BACKUP_PATH:?BACKUP_PATH not set}:/backups
+      # system
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+        - ./borg.env
+#    entrypoint: /bin/sh

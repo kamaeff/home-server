@@ -1,0 +1,3 @@
+# m    h    d    M     wd    command
+0      10   *    *     *     /bin/sh /cron-scripts/backup.sh >/proc/1/fd/1 2>/proc/1/fd/2
+0      0    3    *     *     /bin/sh /cron-scripts/compact.sh >/proc/1/fd/1 2>/proc/1/fd/2
