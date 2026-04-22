@@ -11,6 +11,7 @@ function main {
     setup_subdirs
     docker_update
     setup_rclone
+    setup_caddy
     echo "setup SUCCESS"
 }
 
@@ -51,6 +52,14 @@ function docker_update {
 
 function setup_rclone {
     docker compose run --rm rclone config
+}
+
+function setup_caddy {
+    echo "Settting up Caddy"
+    echo "Building static files"
+    docker compose run --rm caddy-build-static
+    echo "Static files successfully built"
+    echo "Caddy is set up"
 }
 
 

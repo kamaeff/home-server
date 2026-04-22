@@ -37,3 +37,18 @@ services:
       - "${DOWNLOADS_PATH:?DOWNLOADS_PATH not set}/torrents/:/downloads"
       # here can be added an optional watch directory
     restart: always
+
+  aria2:
+    build: ./aria2-build
+    container_name: aria2
+    user: 1000:1000
+    networks:
+      - aria2
+    expose:
+      - "6800"
+    env_file:
+      - aria2.env
+    volumes:
+      - "${APP_DATA:?APP_DATA not set}/aria2/:/aria2-data"
+      - "${DOWNLOADS_PATH:?DOWNLOADS_PATH not set}/aria/:/downloads"
+    restart: always

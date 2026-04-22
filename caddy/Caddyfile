@@ -40,6 +40,22 @@ torrents.{$SERVICE_DOMAIN} {
     }
 }
 
+aria.{$SERVICE_DOMAIN} {
+    import tls
+    @rpc {
+        path /rpc
+        path /jsonrpc
+    }
+    handle @rpc {
+        reverse_proxy aria2:6800
+    }
+    handle {
+        file_server {
+            root /static/aria-ng
+        }
+    }
+}
+
 picard.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy picard:5800
