@@ -48,9 +48,9 @@ def main(cli, vn, rem):
         files = (f for f in walk_result[4] if f[0].endswith('.pkg'))
         for file_name, stat in files:
             url = base_url + quote(f'{vn.vpath}/{vfs_subdir}/{file_name}')
-            param_sfo = extract_param_sfo(Path.join(fs_parent_dir, file_name))
+            param_sfo = extract_param_sfo(Path(fs_parent_dir, file_name))
             title_id = param_sfo.get('TITLE_ID') or extract_package_id(file_name)
-            content_id = param_sfo.get(content_id)
+            content_id = param_sfo.get('CONTENT_ID')
             response[url] = {
                 "title_id": title_id,
                 "region": REGIONS.get(content_id[0].upper()) if content_id else None,
