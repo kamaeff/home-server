@@ -19,10 +19,12 @@ borg create -v --stats '/backups/home-server::app-data-{utcnow}' \
     -- /app-data
 
 [ -n "${FILESHARE_SUBPATH_1}" ]
+[ -n "${FILESHARE_SUBPATH_2}" ]
 
 borg create -v --stats '/backups/home-server::fileshare-{utcnow}' \
     --exclude="/fileshare/${FILESHARE_SUBPATH_1}/downloads" \
     --exclude="/fileshare/${FILESHARE_SUBPATH_1}/music-downloads-staging" \
+    --exclude="/fileshare/${FILESHARE_SUBPATH_2}/ФИЛЬМЫ И СЕРИАЛЫ/" \
     -- /fileshare
 
 
