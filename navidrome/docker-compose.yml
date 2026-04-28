@@ -17,6 +17,7 @@ services:
       - ND_ENABLEINSIGHTSCOLLECTOR=false
       - ND_ENABLESHARING=true
       - ND_PID_ALBUM=albumartistid,album,albumversion,releasedate
+      - ND_LISTENBRAINZ_BASEURL=https://lb-proxy.${SERVICE_DOMAIN:?SERVICE_DOMAIN not set}/1/
 
   navidrome-octo-fiesta:
 #     # 415198f is releases/v0.6

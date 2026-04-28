@@ -24,6 +24,8 @@ services:
       - ${APP_DATA:?APP_DATA not set}/caddy/config:/config
       - ${APP_DATA:?APP_DATA not set}/caddy/data:/data
       - ${APP_DATA:?APP_DATA not set}/caddy/static:/static:ro
+    environment:
+        - SERVICE_DOMAIN=${SERVICE_DOMAIN:?SERVICE_DOMAIN not set}
     env_file: caddy.env
 
   caddy-build-static:
