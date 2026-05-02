@@ -10,43 +10,67 @@ from pathlib import Path
 from urllib.parse import quote
 import re
 import struct
+import datetime as dt
 
 
 ###### Main logic ######
 
 COVER_VFS_PREFIX = '__fpkg_cover/'
 COVER_POSTFIX = '.png'
-JSON_VFS_PATH = '__FPKGi.json'
+JSON_VFS_PATH_PATTERN = re.compile(r'__FPKGi_?(?P<category>\w*).json$')
+
 
 def main(cli, vn, rem):
-    if rem == JSON_VFS_PATH:
-        return handle_json(cli, vn, rem)
-    elif rem.startswith(COVER_VFS_PREFIX):
+    if rem.startswith(COVER_VFS_PREFIX):
         return handle_cover(cli, vn, rem[len(COVER_VFS_PREFIX):-len(COVER_POSTFIX)])
-    return str(cli.tx_404())
+
+    match = JSON_VFS_PATH_PATTERN.match(rem)
+    if match is None:
+        return str(cli.tx_404())
+
+    return handle_json(cli, vn, match.group('category') or None)
 
 
 def handle_cover(cli, vn, rem):
     vfs_path = Path(vn.vpath, rem)
 
     if not REQUIRED_PERMISSIONS.can_access(vn, vfs_path, cli.uname):
-        return str(cli.tx_403())
+        return str(cli.tx_404(is_403=True))
 
     with PkgFile(Path(vn.realpath, rem)) as pkg:
         image = pkg.extract_cover_image()
+
     if image is None:
         return str(cli.tx_404())
-    return str(cli.reply(image, 200, "image/png"))
+
+    cli.reply(image, 200, "image/png")
+    return "true"
 
 
-def handle_json(cli, vn, rem):
+def handle_json(cli, vn, category):
+    cached = Cache(cli.uname, vn.vpath)
+    packages = cached.data
+    if packages is None:
+        packages = get_all_packages(cli, vn)
+        cached.data = packages
+
+    if category is not None:
+        packages = {url: value for url, value in packages.items() if value["category"] == category}
+
+    response_body = json.dumps({"DATA": packages}).encode("utf-8")
+
+    cli.reply(response_body, 200, "application/json")
+    return "true"
+
+
+def get_all_packages(cli, vn):
     protocol = "https" if cli.is_https else "http"
     basic_auth=''
     if cli.uname != '*' or cli.pw:
         basic_auth = f'{cli.uname}:{cli.pw}@'
     base_url = f"{protocol}://{basic_auth}{cli.host}/"
 
-    response = {}
+    packages = {}
     for walk_result in vn.walk('', '', [], cli.uname, REQUIRED_PERMISSIONS.permissions, 0, False, False, True):
         vfs_subdir = walk_result[2]
         fs_parent_dir = walk_result[3]
@@ -58,11 +82,46 @@ def handle_json(cli, vn, rem):
 
             url = base_url + quote(f'{vn.vpath}/{vfs_subdir}/{file_name}')
             icon_url = (base_url + quote(f'{vn.vpath}/{COVER_VFS_PREFIX}{vfs_subdir}/{file_name}{COVER_POSTFIX}')) if has_cover_image else None
-            response[url] = format_pkg_params(param_sfo, file_name[:-4], icon_url, stat.st_size)
+            packages[url] = format_pkg_params(param_sfo, file_name[:-4], icon_url, stat.st_size)
 
-    response_body = json.dumps({"DATA": response}).encode("utf-8")
+    return packages
 
-    return str(cli.reply(response_body, 200, "application/json"))
+
+class Cache:
+    _caches = {}
+
+    def __new__(cls, username, vfs_root):
+        cached = cls._caches.get((username, vfs_root))
+        if cached is not None and cached.is_valid:
+            return cached
+
+        new_instance = super().__new__(cls)
+        new_instance.username = username
+        new_instance.vfs_root = vfs_root
+        new_instance.cached_at = dt.datetime.min
+        new_instance._data = {}
+
+        cls._caches[(username, vfs_root)] = new_instance
+
+        return new_instance
+
+    @property
+    def data(self):
+        if self.is_valid:
+            print(f'Got packages from cache for user {self.username} vpath {self.vfs_root}')
+            return self._data
+        print(f'No packages from cache for user {self.username} vpath {self.vfs_root}')
+        return None
+
+    @data.setter
+    def data(self, data):
+        print(f'Caching packages for user {self.username} vpath {self.vfs_root}')
+        self._data = data
+        self.cached_at = dt.datetime.now()
+
+    @property
+    def is_valid(self):
+        return self.cached_at >= dt.datetime.now() - dt.timedelta(seconds=10)
 
 ###### /Main logic ######
 
