@@ -15,13 +15,14 @@ import struct
 ###### Main logic ######
 
 COVER_VFS_PREFIX = '__fpkg_cover/'
+COVER_POSTFIX = '.png'
 JSON_VFS_PATH = '__FPKGi.json'
 
 def main(cli, vn, rem):
     if rem == JSON_VFS_PATH:
         return handle_json(cli, vn, rem)
     elif rem.startswith(COVER_VFS_PREFIX):
-        return handle_cover(cli, vn, rem[len(COVER_VFS_PREFIX):])
+        return handle_cover(cli, vn, rem[len(COVER_VFS_PREFIX):-len(COVER_POSTFIX)])
     return str(cli.tx_404())
 
 
@@ -56,7 +57,7 @@ def handle_json(cli, vn, rem):
                 has_cover_image = pkg.has_cover_image()
 
             url = base_url + quote(f'{vn.vpath}/{vfs_subdir}/{file_name}')
-            icon_url = (base_url + quote(f'{vn.vpath}/{COVER_VFS_PREFIX}{vfs_subdir}/{file_name}')) if has_cover_image else None
+            icon_url = (base_url + quote(f'{vn.vpath}/{COVER_VFS_PREFIX}{vfs_subdir}/{file_name}{COVER_POSTFIX}')) if has_cover_image else None
             response[url] = format_pkg_params(param_sfo, file_name[:-4], icon_url, stat.st_size)
 
     response_body = json.dumps({"DATA": response}).encode("utf-8")
@@ -121,7 +122,7 @@ def format_pkg_params(param_sfo: dict, file_name: str, cover_url: str, file_size
     category = Category(param_sfo.get('CATEGORY'), title_id, file_name)
     response['category'] = category.fpkgi_category
 
-    response['name'] = f'{param_sfo.get('TITLE') or 'BROKEN PKG FILE'} [{category.title_prefix}] | {file_name}'
+    response['name'] = f'[{category.title_prefix}] {param_sfo.get('TITLE') or 'BROKEN PKG FILE'} | {file_name}'
 
     return response
 
