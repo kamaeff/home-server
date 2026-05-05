@@ -23,6 +23,7 @@
 [accounts]
   ${USER1NAME}:${USER1PASS}
   ${USER2NAME}:${USER2PASS}
+  books_ro:${BOOKS_RO_PASS}
 
 [groups]
   ${GROUP1NAME}:   ${USER1NAME}, ${USER2NAME}
@@ -50,3 +51,11 @@
     g: *
   flags:
     on404: /handlers/fpkgi.py
+[/books]
+  /w/${USER1NAME}/books
+  accs:
+    r: books_ro
+  flags:
+    rss
+    opds
+    opds_exts: fb2,fb3,fbz,zip,epub,mobi,mp3,m4b,pdf,djvu
