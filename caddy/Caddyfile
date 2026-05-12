@@ -1,3 +1,10 @@
+{
+    servers {
+        trusted_proxies static private_ranges
+        client_ip_headers X-Forwarded-For CF-Connecting-IP
+    }
+}
+
 (tls) {
     tls {
         dns cloudflare {$CLOUDFLARE_API_TOKEN}
