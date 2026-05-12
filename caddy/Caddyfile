@@ -22,6 +22,21 @@ drive.{$SERVICE_DOMAIN} {
     reverse_proxy http://copyparty:3923
 }
 
+drive-ext.{$SERVICE_DOMAIN} {
+    import tls
+    @public_paths {
+	method GET HEAD OPTIONS TRACE
+        path /shared-links/public*
+        path /.cpr/w/*
+    }
+    handle @public_paths {
+        reverse_proxy http://copyparty:3923
+    }
+    handle {
+        abort
+    }
+}
+
 http://drive.{$SERVICE_DOMAIN} {
     @fpkgi {
         protocol http
