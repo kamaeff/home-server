@@ -2,6 +2,8 @@ include:
   # common services
   - path: caddy/docker-compose.yml
     env_file: .env
+  - path: cloudflared/docker-compose.yml
+    env_file: .env
   - path: rclone/docker-compose.yml
     env_file: .env
   # /common services
@@ -34,6 +36,8 @@ include:
   #   env_file: .env
 
 networks:
+  cloudflared:
+
   vw:
   copyparty:
   navidrome:

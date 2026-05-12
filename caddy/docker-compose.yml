@@ -4,6 +4,8 @@ services:
     container_name: caddy
     restart: always
     networks:
+      - cloudflared
+
       - vw
       - copyparty
       - navidrome

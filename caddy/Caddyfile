@@ -61,14 +61,16 @@ picard.{$SERVICE_DOMAIN} {
     reverse_proxy picard:5800
 }
 
-music.{$SERVICE_DOMAIN} {
+music.{$SERVICE_DOMAIN},
+music-ext.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy navidrome:4533
 }
 # separate domain for octo-fiesta
 # acts as a simple switch to easily toggle between
 # clean navidrome and octo-fiesta-powered navidrome API
-music2.{$SERVICE_DOMAIN} {
+music2.{$SERVICE_DOMAIN},
+music2-ext.{$SERVICE_DOMAIN} {
     import tls
     handle /rest/* {
         reverse_proxy navidrome-octo-fiesta:8080
