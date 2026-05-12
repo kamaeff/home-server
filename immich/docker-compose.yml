@@ -11,6 +11,22 @@
 name: immich
 
 services:
+  immich-public-proxy:
+    image: alangrainger/immich-public-proxy:latest
+    container_name: immich-public-proxy
+    restart: always
+    networks:
+      - immich-front
+    expose:
+      - '3000'
+    environment:
+      PUBLIC_BASE_URL: https://photos-ext.${SERVICE_DOMAIN:?SERVICE_DOMAIN not set}
+      IMMICH_URL: http://immich-server:2283
+    healthcheck:
+      test: curl -s http://localhost:3000/share/healthcheck -o /dev/null || exit 1
+      start_period: 10s
+      timeout: 5s
+
   immich-server:
     container_name: immich-server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}

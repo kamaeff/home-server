@@ -108,6 +108,11 @@ photos.{$SERVICE_DOMAIN} {
     reverse_proxy http://immich-server:2283
 }
 
+photos-ext.{$SERVICE_DOMAIN} {
+    import tls
+    reverse_proxy http://immich-public-proxy:3000
+}
+
 links.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy http://linkwarden-server:3000
