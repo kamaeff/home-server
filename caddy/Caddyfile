@@ -12,7 +12,8 @@
     }
 }
 
-vw.{$SERVICE_DOMAIN} {
+vw.{$SERVICE_DOMAIN},
+vw-ext.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy vw:80
 }
