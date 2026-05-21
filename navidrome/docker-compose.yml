@@ -21,7 +21,7 @@ services:
 
   navidrome-octo-fiesta:
 #     # 415198f is releases/v0.6
-    image: ghcr.io/v1ck3s/octo-fiesta:dev
+    image: ghcr.io/v1ck3s/octo-fiesta:latest
 #    build: https://github.com/kamaeff/octo-fiesta.git#feature/refactor-basedownloadservice
     container_name: navidrome-octo-fiesta
     user: 1000:1000

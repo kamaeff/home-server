@@ -19,6 +19,22 @@ services:
       - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}/slskd:/app/downloads"
       - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/slskd-shares/navidrome:ro"
 
+  flood:
+    image: jesec/flood
+    container_name: flood
+    user: 1000:1000
+    networks:
+      - transmission
+    expose:
+      - "3000"
+    environment:
+      - "HOME=/config"
+      - "FLOOD_OPTION_allowedpath=/downloads"
+    volumes:
+      - "${DOWNLOADS_PATH:?DOWNLOADS_PATH not set}/torrents/:/downloads:ro"
+      - "${APP_DATA:?APP_DATA not set}/flood:/config"
+    restart: always
+
   transmission:
     image: linuxserver/transmission
     container_name: transmission
@@ -33,8 +49,8 @@ services:
     env_file:
       - transmission.env
     volumes:
-      - "${APP_DATA:?APP_DATA not set}/transmission/:/config"
       - "${DOWNLOADS_PATH:?DOWNLOADS_PATH not set}/torrents/:/downloads"
+      - "${APP_DATA:?APP_DATA not set}/transmission/:/config"
       # here can be added an optional watch directory
     restart: always
 

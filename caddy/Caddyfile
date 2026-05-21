@@ -58,8 +58,13 @@ slskd.{$SERVICE_DOMAIN} {
 
 torrents.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy transmission:9091 {
-        header_up X-Real-IP {remote_host}
+    handle /transmission/* {
+        reverse_proxy transmission:9091 {
+            header_up X-Real-IP {remote_host}
+        }
+    }
+    handle {
+        reverse_proxy flood:3000
     }
 }
 
