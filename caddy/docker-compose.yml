@@ -16,6 +16,7 @@ services:
       - transmission
       - aria2
       - pihole
+      - scrutiny
 
     ports:
       - 80:80

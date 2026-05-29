@@ -1,0 +1,23 @@
+services:
+  scrutiny:
+    restart: always
+    container_name: scrutiny
+    image: ghcr.io/analogj/scrutiny:v0.9-omnibus
+    cap_add:
+      - SYS_RAWIO
+      - SYS_ADMIN
+    networks:
+      - scrutiny
+    expose:
+      - "8080" # webapp
+      - "8086" # influxDB admin
+    env_file:
+      - scrutiny.env
+    volumes:
+      - /run/udev:/run/udev:ro
+      - ${APP_DATA:?APP_DATA not set}/scrutiny/influxdb:/opt/scrutiny/influxdb
+      - ${APP_DATA:?APP_DATA not set}/scrutiny/config:/opt/scrutiny/config
+      - ./collector.yaml:/opt/scrutiny/config/collector.yaml
+    devices:
+      - "/dev/disk/by-id/ata-XS2000_50026B7282EF52B0:/dev/sda"
+      - "/dev/nvme0"

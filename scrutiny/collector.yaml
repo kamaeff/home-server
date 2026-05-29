@@ -1,0 +1,5 @@
+version: 1
+
+devices:
+  - device: /dev/sda
+    type: 'sat'

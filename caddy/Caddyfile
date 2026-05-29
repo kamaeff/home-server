@@ -129,6 +129,11 @@ pihole.{$SERVICE_DOMAIN} {
     reverse_proxy http://pihole:80
 }
 
+smart.{$SERVICE_DOMAIN} {
+    import tls
+    reverse_proxy http://scrutiny:8080
+}
+
 # chat.{$SERVICE_DOMAIN} {
 #     import tls
 #     reverse_proxy owui:8080

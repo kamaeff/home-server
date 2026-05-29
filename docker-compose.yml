@@ -32,6 +32,8 @@ include:
       - ./pihole/.env
   - path: borg/docker-compose.yml
     env_file: .env
+  - path: scrutiny/docker-compose.yml
+    env_file: .env
   # - path: owui/docker-compose.yml
   #   env_file: .env
 
@@ -50,4 +52,5 @@ networks:
   linkwarden-front:
   linkwarden-back:
   pihole:
+  scrutiny:
   # owui:
