@@ -5,7 +5,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@linkwarden-postgres:5432/postgres
     restart: always
-    image: ghcr.io/linkwarden/linkwarden:v2.13.5
+    image: ghcr.io/linkwarden/linkwarden:v2.14.1
     expose:
       - '3000'
     volumes:
