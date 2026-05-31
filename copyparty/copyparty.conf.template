@@ -32,8 +32,15 @@
   /w
   accs:
     r: @${GROUP1NAME}
+# accessible for read without auth from LAN
 [/share]
   /w/share
+  accs:
+    A: @${GROUP1NAME}
+    r: *
+# accessible for read without auth from the internets
+[/public]
+  /w/public
   accs:
     A: @${GROUP1NAME}
     r: *
