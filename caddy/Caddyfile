@@ -1,7 +1,9 @@
 {
     servers {
-        trusted_proxies static private_ranges
-        client_ip_headers X-Forwarded-For CF-Connecting-IP
+        trusted_proxies_strict
+	# cloudflared tunnels
+        trusted_proxies static 192.168.0.0/24
+        client_ip_headers CF-Connecting-IP
     }
 }
 
@@ -12,15 +14,25 @@
     }
 }
 
+(x_real_ip) {
+    header_up x-real-ip "{client_ip}"
+}
+
 vw.{$SERVICE_DOMAIN},
 vw-ext.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy vw:80
 }
 
+(proxy_copyparty) {
+    reverse_proxy http://copyparty:3923 {
+        import x_real_ip
+    }
+}
+
 drive.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy http://copyparty:3923
+    import proxy_copyparty
 }
 
 drive-ext.{$SERVICE_DOMAIN} {
@@ -31,7 +43,7 @@ drive-ext.{$SERVICE_DOMAIN} {
         path /.cpr/w/*
     }
     handle @public_paths {
-        reverse_proxy http://copyparty:3923
+        import proxy_copyparty
     }
     handle {
         abort
@@ -44,7 +56,7 @@ http://drive.{$SERVICE_DOMAIN} {
         path /fpkgi/*
     }
     handle @fpkgi {
-        reverse_proxy @fpkgi http://copyparty:3923
+        import proxy_copyparty
     }
     handle {
         redir https://drive.{$SERVICE_DOMAIN}{uri} permanent
@@ -60,7 +72,7 @@ torrents.{$SERVICE_DOMAIN} {
     import tls
     handle /transmission/* {
         reverse_proxy transmission:9091 {
-            header_up X-Real-IP {remote_host}
+            import x_real_ip
         }
     }
     handle {
