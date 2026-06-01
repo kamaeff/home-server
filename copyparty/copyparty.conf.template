@@ -21,13 +21,17 @@
   xff-src: lan      # trust x-forwarded-for header for requests coming from these networks
   rproxy: 1         # which ip to associate clients with; [0]=tcp, [1]=origin (first x-fwd, unsafe), [2]=outermost-proxy, [3]=second-proxy, [-1]=closest-proxy
 
+# disable https – let reverse proxy handle it
+  no-crt
+  http-only
+
 [accounts]
   ${USER1NAME}:${USER1PASS}
   ${USER2NAME}:${USER2PASS}
   books_ro:${BOOKS_RO_PASS}
 
 [groups]
-  ${GROUP1NAME}:   ${USER1NAME}, ${USER2NAME}
+  ${GROUP1NAME}: ${USER1NAME}, ${USER2NAME}
 
 [/]
   /w
