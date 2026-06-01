@@ -146,6 +146,11 @@ smart.{$SERVICE_DOMAIN} {
     reverse_proxy http://scrutiny:8080
 }
 
+feed.{$SERVICE_DOMAIN} {
+    import tls
+    reverse_proxy http://miniflux-server:8080
+}
+
 # chat.{$SERVICE_DOMAIN} {
 #     import tls
 #     reverse_proxy owui:8080

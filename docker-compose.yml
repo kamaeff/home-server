@@ -34,6 +34,10 @@ include:
     env_file: .env
   - path: scrutiny/docker-compose.yml
     env_file: .env
+  - path: miniflux/docker-compose.yml
+    env_file:
+      - .env
+      - ./miniflux/.env
   # - path: owui/docker-compose.yml
   #   env_file: .env
 
@@ -57,4 +61,6 @@ networks:
   linkwarden-back:
   pihole:
   scrutiny:
+  miniflux-front:
+  miniflux-back:
   # owui:

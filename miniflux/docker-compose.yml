@@ -1,0 +1,36 @@
+services:
+  miniflux-server:
+    image: miniflux/miniflux:2.3.1
+    container_name: miniflux-server
+    depends_on:
+      miniflux-db:
+        condition: service_healthy
+    expose:
+      - '8080'
+    networks:
+      - miniflux-front
+      - miniflux-back
+    environment:
+      - DATABASE_URL=postgres://miniflux:${MINIFLUX_DB_PASSWORD}@miniflux-db/miniflux?sslmode=disable
+      - RUN_MIGRATIONS=1
+      - BASE_URL=https://feed.${SERVICE_DOMAIN}
+    healthcheck:
+      test: ["CMD", "/usr/bin/miniflux", "-healthcheck", "auto"]
+    restart: always
+
+
+  miniflux-db:
+    image: postgres:18
+    container_name: miniflux-db
+    networks:
+      - miniflux-back
+    volumes:
+      - ${APP_DATA:?APP_DATA not set}/miniflux/db:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=miniflux
+      - POSTGRES_PASSWORD=${MINIFLUX_DB_PASSWORD}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "miniflux"]
+      interval: 10s
+      start_period: 30s
+    restart: always

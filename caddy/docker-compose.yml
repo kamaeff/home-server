@@ -17,6 +17,7 @@ services:
       - aria2
       - pihole
       - scrutiny
+      - miniflux-front
 
     ports:
       - 80:80
