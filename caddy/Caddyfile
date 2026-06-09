@@ -131,6 +131,11 @@ photos-ext.{$SERVICE_DOMAIN} {
     reverse_proxy http://immich-public-proxy:3000
 }
 
+timeline.{$SERVICE_DOMAIN} {
+    import tls
+    reverse_proxy http://geopulse-ui:80
+}
+
 links.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy http://linkwarden-server:3000

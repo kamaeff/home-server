@@ -22,6 +22,10 @@ include:
     env_file:
       - .env
       - ./immich/.env
+  - path: geopulse/docker-compose.yml
+    env_file:
+      - .env
+      - ./geopulse/.env
   - path: linkwarden/docker-compose.yml
     env_file:
       - .env
@@ -57,6 +61,8 @@ networks:
   aria2:
   immich-front:
   immich-back:
+  geopulse-front:
+  geopulse-back:
   linkwarden-front:
   linkwarden-back:
   pihole:

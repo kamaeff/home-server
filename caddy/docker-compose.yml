@@ -11,6 +11,7 @@ services:
       - navidrome
       - picard
       - immich-front
+      - geopulse-front
       - linkwarden-front
       - slskd
       - transmission
