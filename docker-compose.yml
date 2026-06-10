@@ -59,6 +59,7 @@ networks:
   slskd:
   transmission:
   aria2:
+  pyload:
   immich-front:
   immich-back:
   geopulse-front:

@@ -68,3 +68,20 @@ services:
       - "${APP_DATA:?APP_DATA not set}/aria2/:/aria2-data"
       - "${DOWNLOADS_PATH:?DOWNLOADS_PATH not set}/aria/:/downloads"
     restart: always
+
+  pyload:
+    image: linuxserver/pyload-ng:latest
+    container_name: pyload
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ${APP_DATA:?}/pyload:/config
+      - ${DOWNLOADS_PATH:?}/pyload:/downloads
+    networks:
+      - pyload
+    expose:
+      - "8000"
+#       - "9666" # optional Click'n'Load
+    restart: always

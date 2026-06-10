@@ -96,6 +96,13 @@ aria.{$SERVICE_DOMAIN} {
     }
 }
 
+pyload.{$SERVICE_DOMAIN} {
+    import tls
+    handle {
+        reverse_proxy http://pyload:8000
+    }
+}
+
 picard.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy picard:5800
