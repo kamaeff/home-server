@@ -1,4 +1,16 @@
 services:
+  photon:
+    build: ./photon-build
+    container_name: photon
+    networks:
+      - geopulse-back
+    expose:
+      - "2322"
+    volumes:
+      - ${APP_DATA:?}/photon/data:/data
+      - ${APP_DATA:?}/photon/import:/import:ro
+    restart: always
+
   geopulse-keygen:
     image: alpine:latest
     container_name: geopulse-keygen

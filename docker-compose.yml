@@ -22,10 +22,10 @@ include:
     env_file:
       - .env
       - ./immich/.env
-  - path: geopulse/docker-compose.yml
+  - path: gis/docker-compose.yml
     env_file:
       - .env
-      - ./geopulse/.env
+      - ./gis/.env
   - path: linkwarden/docker-compose.yml
     env_file:
       - .env
