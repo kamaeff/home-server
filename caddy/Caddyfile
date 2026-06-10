@@ -138,6 +138,7 @@ photos-ext.{$SERVICE_DOMAIN} {
     reverse_proxy http://immich-public-proxy:3000
 }
 
+timeline-ext.{$SERVICE_DOMAIN},
 timeline.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy http://geopulse-ui:80
