@@ -64,6 +64,8 @@ networks:
   immich-back:
   geopulse-front:
   geopulse-back:
+  hauk-front:
+  hauk-back:
   linkwarden-front:
   linkwarden-back:
   pihole:

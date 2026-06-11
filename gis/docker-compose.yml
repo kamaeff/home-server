@@ -1,4 +1,40 @@
 services:
+  hauk:
+    image: ghcr.io/parkan/go-hauk
+    container_name: hauk
+    networks:
+      - hauk-front
+      - hauk-back
+    expose:
+      - "8080"
+    environment:
+      HAUK_REDIS_ADDR: hauk-redis:6379
+      HAUK_AUTH_METHOD: password
+      HAUK_PUBLIC_URL: https://where-is.${PERSONAL_DOMAIN}
+      HAUK_LINK_STYLE: 7
+      HAUK_MAX_DURATION: "604800"  # 7d
+      HAUK_TRUST_PROXY: "true"
+    env_file:
+      - hauk.env
+    depends_on:
+      hauk-redis:
+        condition: service_healthy
+    restart: always
+
+  hauk-redis:
+    image: redis:alpine
+    command: [ "redis-server", "--appendonly", "yes" ]
+    networks:
+      - hauk-back
+    expose:
+      - "6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: always
+
   photon:
     build: ./photon-build
     container_name: photon
@@ -11,6 +47,9 @@ services:
       - ${APP_DATA:?}/photon/import:/import:ro
     restart: always
 
+# geopulse
+# since i've hosted photon it's possible to switch to dawarich
+# but for now geopulse is fine
   geopulse-keygen:
     image: alpine:latest
     container_name: geopulse-keygen

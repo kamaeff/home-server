@@ -144,6 +144,11 @@ timeline.{$SERVICE_DOMAIN} {
     reverse_proxy http://geopulse-ui:80
 }
 
+where-is.{$PERSONAL_DOMAIN} {
+    import tls
+    reverse_proxy http://hauk:8080
+}
+
 links.{$SERVICE_DOMAIN} {
     import tls
     reverse_proxy http://linkwarden-server:3000

@@ -12,6 +12,7 @@ services:
       - picard
       - immich-front
       - geopulse-front
+      - hauk-front
       - linkwarden-front
       - slskd
       - transmission
@@ -32,6 +33,7 @@ services:
       - ${APP_DATA:?APP_DATA not set}/caddy/static:/static:ro
     environment:
         - SERVICE_DOMAIN=${SERVICE_DOMAIN:?SERVICE_DOMAIN not set}
+        - PERSONAL_DOMAIN=${PERSONAL_DOMAIN:?}
     env_file: caddy.env
 
   caddy-build-static:
