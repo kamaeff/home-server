@@ -2,7 +2,7 @@
     servers {
         strict_sni_host on
         trusted_proxies_strict
-	# cloudflared tunnels
+	    # cloudflared tunnels
         trusted_proxies static 192.168.0.0/24
         client_ip_headers CF-Connecting-IP
     }
@@ -15,25 +15,28 @@
     }
 }
 
-(x_real_ip) {
-    header_up x-real-ip "{client_ip}"
+(rproxy) {
+    reverse_proxy {args[0]} {
+        {block}
+        header_up -x-forwarded-for
+        header_up x-real-ip "{client_ip}"
+    }
 }
 
 vw.{$SERVICE_DOMAIN},
 vw-ext.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy vw:80
+    import rproxy vw:80
 }
 
-(proxy_copyparty) {
-    reverse_proxy http://copyparty:3923 {
-        import x_real_ip
-    }
+
+(copyparty) {
+    import rproxy http://copyparty:3923
 }
 
 drive.{$SERVICE_DOMAIN} {
     import tls
-    import proxy_copyparty
+    import copyparty
 }
 
 drive-ext.{$SERVICE_DOMAIN} {
@@ -44,7 +47,7 @@ drive-ext.{$SERVICE_DOMAIN} {
         path /.cpr/w/*
     }
     handle @public_paths {
-        import proxy_copyparty
+        import copyparty
     }
     handle {
         abort
@@ -57,7 +60,7 @@ http://drive.{$SERVICE_DOMAIN} {
         path /fpkgi/*
     }
     handle @fpkgi {
-        import proxy_copyparty
+        import copyparty
     }
     handle {
         redir https://drive.{$SERVICE_DOMAIN}{uri} permanent
@@ -66,18 +69,16 @@ http://drive.{$SERVICE_DOMAIN} {
 
 slskd.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy slskd:5030
+    import rproxy slskd:5030
 }
 
 torrents.{$SERVICE_DOMAIN} {
     import tls
     handle /transmission/* {
-        reverse_proxy transmission:9091 {
-            import x_real_ip
-        }
+        import rproxy transmission:9091
     }
     handle {
-        reverse_proxy flood:3000
+        import rproxy flood:3000
     }
 }
 
@@ -88,7 +89,7 @@ aria.{$SERVICE_DOMAIN} {
         path /jsonrpc
     }
     handle @rpc {
-        reverse_proxy aria2:6800
+        import rproxy aria2:6800
     }
     handle {
         file_server {
@@ -99,20 +100,18 @@ aria.{$SERVICE_DOMAIN} {
 
 pyload.{$SERVICE_DOMAIN} {
     import tls
-    handle {
-        reverse_proxy http://pyload:8000
-    }
+    import rproxy http://pyload:8000
 }
 
 picard.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy picard:5800
+    import rproxy picard:5800
 }
 
 music.{$SERVICE_DOMAIN},
 music-ext.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy navidrome:4533
+    import rproxy navidrome:4533
 }
 # separate domain for octo-fiesta
 # acts as a simple switch to easily toggle between
@@ -121,56 +120,56 @@ music2.{$SERVICE_DOMAIN},
 music2-ext.{$SERVICE_DOMAIN} {
     import tls
     handle /rest/* {
-        reverse_proxy navidrome-octo-fiesta:8080
+        import rproxy navidrome-octo-fiesta:8080
     }
     # octo-fiesta should not intercept any other apis
     handle {
-        reverse_proxy navidrome:4533
+        import rproxy navidrome:4533
     }
 }
 
 photos.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy http://immich-server:2283
+    import rproxy http://immich-server:2283
 }
 
 photos-ext.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy http://immich-public-proxy:3000
+    import rproxy http://immich-public-proxy:3000
 }
 
 timeline-ext.{$SERVICE_DOMAIN},
 timeline.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy http://geopulse-ui:80
+    import rproxy http://geopulse-ui:80
 }
 
 where-is.{$PERSONAL_DOMAIN} {
     import tls
-    reverse_proxy http://hauk:8080
+    import rproxy http://hauk:8080
 }
 
 links.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy http://linkwarden-server:3000
+    import rproxy http://linkwarden-server:3000
 }
 
 pihole.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy http://pihole:80
+    import rproxy http://pihole:80
 }
 
 smart.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy http://scrutiny:8080
+    import rproxy http://scrutiny:8080
 }
 
 feed.{$SERVICE_DOMAIN} {
     import tls
-    reverse_proxy http://miniflux-server:8080
+    import rproxy http://miniflux-server:8080
 }
 
 # chat.{$SERVICE_DOMAIN} {
 #     import tls
-#     reverse_proxy owui:8080
+#     import rproxy owui:8080
 # }
