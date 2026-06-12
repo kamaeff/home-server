@@ -1,4 +1,4 @@
-services:  
+services:
   vw:
     image: vaultwarden/server:latest
     container_name: vw
@@ -10,7 +10,7 @@ services:
     environment:
       - SIGNUPS_ALLOWED=false
       - PUSH_ENABLED=true
-      - EXPERIMENTAL_CLIENT_FEATURE_FLAGS=ssh-key-vault-item,ssh-agent
+      - EXPERIMENTAL_CLIENT_FEATURE_FLAGS=ssh-key-vault-item,ssh-agent-v2
     env_file: vw.env
     volumes:
       - ${APP_DATA:?APP_DATA not set}/vw/data:/data
