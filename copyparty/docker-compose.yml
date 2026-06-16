@@ -14,6 +14,8 @@ services:
     restart: on-failure:3
     user: "1000:1000"
     env_file: ./copyparty-update-config.env
+    environment:
+      PERSONAL_DOMAIN: ${PERSONAL_DOMAIN:?}
 
   copyparty:
     image: copyparty/dj:latest

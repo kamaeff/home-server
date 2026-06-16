@@ -9,6 +9,7 @@
   ansi              # enable colors in log messages (both in logfiles and stdout)
   usernames
   shr: /shared-links
+  shr-site: https://files.${PERSONAL_DOMAIN}/
   shr-adm: @${GROUP1NAME}
 
 # file management
@@ -19,12 +20,19 @@
 
 # reverse proxy
   xff-hdr: x-real-ip
-  xff-src: lan      # trust x-forwarded-for header for requests coming from these networks
+  xff-src: lan      # trust x-forwarded-for header for requests coming from these networks # lan is fine since only caddy is in lan
   rproxy: 1         # which ip to associate clients with; [0]=tcp, [1]=origin (first x-fwd, unsafe), [2]=outermost-proxy, [3]=second-proxy, [-1]=closest-proxy
 
 # disable https – let reverse proxy handle it
   no-crt
   http-only
+
+# security or smth like that
+  no-robots
+  force-js
+  # https://copyparty.eu/cli/#ls-help-page
+  ls: *,*,ln,p,r
+
 
 [accounts]
   ${USER1NAME}:${USER1PASS}
@@ -38,11 +46,18 @@
   /w
   accs:
     r: @${GROUP1NAME}
+[/public]
+  /w/public
+  accs:
+    r: *
+    A: ${USER1NAME}
+  flags:
+    dthumb
+    dotpart
 [/share]
   /w/share
   accs:
     A: @${GROUP1NAME}
-    r: *
 [/${USER1NAME}]
   /w/${USER1NAME}
   accs:

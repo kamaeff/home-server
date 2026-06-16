@@ -5,6 +5,7 @@ services:
     restart: always
     networks:
       - cloudflared
+      - crowdsec-front
 
       - vw
       - copyparty

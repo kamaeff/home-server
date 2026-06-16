@@ -1,4 +1,16 @@
 {
+    order crowdsec first
+    order appsec after crowdsec
+
+    crowdsec {
+        api_url http://crowdsec:8080
+        api_key {env.CROWDSEC_API_KEY}
+        ticker_interval 15s
+        appsec_url http://crowdsec:7422
+        # see also: https://github.com/crowdsecurity/crowdsec/issues/3837
+        appsec_max_body_bytes 1048576
+    }
+
     servers {
         strict_sni_host on
         trusted_proxies_strict
@@ -10,60 +22,54 @@
 
 (tls) {
     tls {
-        dns cloudflare {$CLOUDFLARE_API_TOKEN}
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
         resolvers 1.1.1.1
     }
 }
 
 (rproxy) {
-    reverse_proxy {args[0]} {
+    reverse_proxy {args[:]} {
         {block}
         header_up -x-forwarded-for
         header_up x-real-ip "{client_ip}"
     }
 }
 
+(external) {
+    import tls
+    log
+    crowdsec
+    appsec
+}
+
 vw.{$SERVICE_DOMAIN},
 vw-ext.{$SERVICE_DOMAIN} {
-    import tls
+    import external
     import rproxy vw:80
 }
 
-
-(copyparty) {
-    import rproxy http://copyparty:3923
-}
-
+# internal copyparty
 drive.{$SERVICE_DOMAIN} {
     import tls
-    import copyparty
+    import rproxy copyparty:3923
 }
 
-drive-ext.{$SERVICE_DOMAIN} {
+# external copyparty
+files.{$PERSONAL_DOMAIN},
+files.{$SERVICE_DOMAIN} {
     import tls
-    @public_paths {
-	method GET HEAD OPTIONS TRACE
-        path /shared-links/public*
-        path /.cpr/w/*
-    }
-    handle @public_paths {
-        import copyparty
-    }
-    handle {
-        abort
-    }
-}
+    log
+    crowdsec
 
-http://drive.{$SERVICE_DOMAIN} {
-    @fpkgi {
-        protocol http
-        path /fpkgi/*
-    }
-    handle @fpkgi {
-        import copyparty
+    # couldn't come up with better matcher atm. POST for web uploads and PUT for WebDAV
+    # because big uploads most probably will break crowdsec WAF
+    @upload method POST PUT
+    handle @upload {
+        import rproxy copyparty:3923
     }
     handle {
-        redir https://drive.{$SERVICE_DOMAIN}{uri} permanent
+        appsec
+        import rproxy copyparty:3923
     }
 }
 
@@ -74,20 +80,13 @@ slskd.{$SERVICE_DOMAIN} {
 
 torrents.{$SERVICE_DOMAIN} {
     import tls
-    handle /transmission/* {
-        import rproxy transmission:9091
-    }
-    handle {
-        import rproxy flood:3000
-    }
+    import rproxy flood:3000
 }
 
 aria.{$SERVICE_DOMAIN} {
     import tls
-    @rpc {
-        path /rpc
-        path /jsonrpc
-    }
+
+    @rpc path /rpc /jsonrpc
     handle @rpc {
         import rproxy aria2:6800
     }
@@ -109,43 +108,38 @@ picard.{$SERVICE_DOMAIN} {
 }
 
 music.{$SERVICE_DOMAIN},
-music-ext.{$SERVICE_DOMAIN} {
-    import tls
+music.{$PERSONAL_DOMAIN} {
+    import external
     import rproxy navidrome:4533
 }
-# separate domain for octo-fiesta
-# acts as a simple switch to easily toggle between
-# clean navidrome and octo-fiesta-powered navidrome API
+
+# otcto-fiesta, don't expose non-subsonic API at all (testing)
 music2.{$SERVICE_DOMAIN},
-music2-ext.{$SERVICE_DOMAIN} {
-    import tls
-    handle /rest/* {
-        import rproxy navidrome-octo-fiesta:8080
-    }
-    # octo-fiesta should not intercept any other apis
-    handle {
-        import rproxy navidrome:4533
-    }
+music2.{$PERSONAL_DOMAIN} {
+    import external
+    import rproxy /rest/* navidrome-octo-fiesta:8080
 }
 
 photos.{$SERVICE_DOMAIN} {
+    # once published, enable appsec and crowdsec, but disable appsec for upload endpoint
+    # https://github.com/crowdsecurity/crowdsec/issues/3837
     import tls
     import rproxy http://immich-server:2283
 }
 
-photos-ext.{$SERVICE_DOMAIN} {
-    import tls
+photos.{$PERSONAL_DOMAIN} {
+    import external
     import rproxy http://immich-public-proxy:3000
 }
 
 timeline-ext.{$SERVICE_DOMAIN},
 timeline.{$SERVICE_DOMAIN} {
-    import tls
+    import external
     import rproxy http://geopulse-ui:80
 }
 
 where-is.{$PERSONAL_DOMAIN} {
-    import tls
+    import external
     import rproxy http://hauk:8080
 }
 

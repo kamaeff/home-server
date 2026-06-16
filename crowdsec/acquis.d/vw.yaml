@@ -1,0 +1,5 @@
+source: docker
+container_name:
+  - vw
+labels:
+  type: vaultwarden

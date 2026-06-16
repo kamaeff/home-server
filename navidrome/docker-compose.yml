@@ -16,6 +16,7 @@ services:
       # - ND_LOGLEVEL=debug
       - ND_ENABLEINSIGHTSCOLLECTOR=false
       - ND_ENABLESHARING=true
+      - ND_SHAREURL=https://music.${PERSONAL_DOMAIN:?}
       - ND_PID_ALBUM=albumartistid,album,albumversion,releasedate
       - ND_LISTENBRAINZ_BASEURL=https://lb-proxy.${SERVICE_DOMAIN:?SERVICE_DOMAIN not set}/1/
 

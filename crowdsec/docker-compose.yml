@@ -1,0 +1,76 @@
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec
+    container_name: crowdsec
+    restart: always
+    networks:
+      - crowdsec-back
+      - crowdsec-front
+    expose:
+      - "8080" # LAPI
+      - "7422" # AppSec/WAF
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      DOCKER_HOST: tcp://crowdsec-socket-proxy:2375
+      COLLECTIONS: >
+        crowdsecurity/caddy
+        gauth-fr/immich
+        Dominic-Wagner/vaultwarden
+
+        crowdsecurity/appsec-virtual-patching
+        crowdsecurity/appsec-generic-rules
+        crowdsecurity/appsec-crs
+        crowdsecurity/appsec-crs-inband
+    depends_on:
+      - crowdsec-socket-proxy
+    volumes:
+      - ${APP_DATA:?}/crowdsec/db:/var/lib/crowdsec/data/
+      - ${APP_DATA:?}/crowdsec/config:/etc/crowdsec/
+      - ./acquis.d:/etc/crowdsec/acquis.d/
+      - ./parsers/s01-parse:/etc/crowdsec/parsers/s01-parse/local
+      - ./scenarios:/etc/crowdsec/scenarios/local
+      - ./appsec-configs:/etc/crowdsec/appsec-configs/local
+
+  crowdsec-socket-proxy:
+    image: lscr.io/linuxserver/socket-proxy:latest
+    container_name: crowdsec-socket-proxy
+    networks:
+      - crowdsec-back
+    expose:
+      - "2375"
+    restart: always
+    environment:
+      - ALLOW_START=0 #optional
+      - ALLOW_STOP=0 #optional
+      - ALLOW_RESTARTS=0 #optional
+      - AUTH=0 #optional
+      - BUILD=0 #optional
+      - COMMIT=0 #optional
+      - CONFIGS=0 #optional
+      - CONTAINERS=1 #optional
+      - DISABLE_IPV6=0 #optional
+      - DISTRIBUTION=0 #optional
+      - EVENTS=1 #optional
+      - EXEC=0 #optional
+      - IMAGES=0 #optional
+      - INFO=1 #optional
+      - LOG_LEVEL=info #optional
+      - NETWORKS=0 #optional
+      - NODES=0 #optional
+      - PING=1 #optional
+      - PLUGINS=0 #optional
+      - POST=0 #optional
+      - SECRETS=0 #optional
+      - SERVICES=0 #optional
+      - SESSION=0 #optional
+      - SWARM=0 #optional
+      - SYSTEM=0 #optional
+      - TASKS=0 #optional
+      - VERSION=1 #optional
+      - VOLUMES=0 #optional
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    read_only: true
+    tmpfs:
+      - /run

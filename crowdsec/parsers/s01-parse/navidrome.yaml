@@ -1,0 +1,46 @@
+debug: false
+onsuccess: next_stage
+filter: |
+    evt.Parsed.program == 'navidrome' &&
+    ParseKV(evt.Parsed.message, evt.Unmarshaled, 'navidrome') in ['', nil]
+name: local/navidrome-logs
+description: "Parse Navidrome logs"
+nodes:
+    - filter: |
+          evt.Unmarshaled.navidrome.msg contains '/auth/login' &&
+          evt.Unmarshaled.navidrome.httpStatus == '401'
+      statics:
+          - meta: log_type
+            value: navidrome_failed_auth
+          - meta: log_subtype
+            value: navidrome_failed_ui_auth
+          - meta: http_user_agent
+            expression: evt.Unmarshaled.navidrome.userAgent
+          - meta: http_status
+            expression: evt.Unmarshaled.navidrome.httpStatus
+    - filter: |
+          evt.Unmarshaled.navidrome.msg == 'API: Invalid login'
+      statics:
+          - meta: log_subtype
+            expression: |
+                if (evt.Unmarshaled.navidrome.error == 'data not found') {
+                    'navidrome_subsonic_invalid_user'
+                } else if (evt.Unmarshaled.navidrome.error == 'invalid authentication') {
+                    'navidrome_subsonic_invalid_password'
+                } else {
+                    ''
+                }
+          - meta: log_type
+            value: navidrome_failed_auth
+          - meta: username
+            expression: evt.Unmarshaled.navidrome.username
+
+statics:
+    - meta: service
+      value: navidrome
+    - parsed: source_ip
+      expression: evt.Unmarshaled.navidrome.remoteAddr
+    - meta: source_ip
+      expression: evt.Unmarshaled.navidrome.remoteAddr
+    - target: evt.StrTime
+      expression: evt.Unmarshaled.navidrome.time
