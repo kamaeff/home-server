@@ -30,7 +30,7 @@
 (rproxy) {
     reverse_proxy {args[:]} {
         {block}
-        header_up -x-forwarded-for
+        header_up x-forwarded-for "{client_ip}"
         header_up x-real-ip "{client_ip}"
     }
 }
