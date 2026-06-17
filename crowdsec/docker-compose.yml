@@ -31,6 +31,7 @@ services:
       - ./parsers/s01-parse:/etc/crowdsec/parsers/s01-parse/local
       - ./scenarios:/etc/crowdsec/scenarios/local
       - ./appsec-configs:/etc/crowdsec/appsec-configs/local
+      - ./crs-plugins:/var/lib/crowdsec/data/crs-plugins/local
 
   crowdsec-socket-proxy:
     image: lscr.io/linuxserver/socket-proxy:latest
