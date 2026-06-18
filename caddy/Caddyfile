@@ -123,6 +123,7 @@ music2.{$PERSONAL_DOMAIN} {
 photos.{$SERVICE_DOMAIN} {
     # once published, enable appsec and crowdsec, but disable appsec for upload endpoint
     # https://github.com/crowdsecurity/crowdsec/issues/3837
+    # https://github.com/crowdsecurity/crowdsec/issues/3837#issuecomment-4461594088
     import tls
     import rproxy http://immich-server:2283
 }
