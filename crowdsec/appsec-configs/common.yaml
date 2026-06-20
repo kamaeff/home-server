@@ -1,0 +1,5 @@
+name: local/common
+on_load:
+  - apply:
+      - SetMaxBodySize(2097152)
+      - SetBodySizeExceededAction("partial")

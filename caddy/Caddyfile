@@ -8,7 +8,7 @@
         ticker_interval 15s
         appsec_url http://crowdsec:7422
         # see also: https://github.com/crowdsecurity/crowdsec/issues/3837
-        appsec_max_body_bytes 1048576
+        appsec_max_body_bytes 2097152
     }
 
     servers {
@@ -48,29 +48,15 @@ vw-ext.{$SERVICE_DOMAIN} {
     import rproxy vw:80
 }
 
-# internal copyparty
 drive.{$SERVICE_DOMAIN} {
     import tls
     import rproxy copyparty:3923
 }
 
-# external copyparty
 files.{$PERSONAL_DOMAIN},
 files.{$SERVICE_DOMAIN} {
-    import tls
-    log
-    crowdsec
-
-    # couldn't come up with better matcher atm. POST for web uploads and PUT for WebDAV
-    # because big uploads most probably will break crowdsec WAF
-    @upload method POST PUT
-    handle @upload {
-        import rproxy copyparty:3923
-    }
-    handle {
-        appsec
-        import rproxy copyparty:3923
-    }
+    import external
+    import rproxy copyparty:3923
 }
 
 slskd.{$SERVICE_DOMAIN} {

@@ -1,0 +1,9 @@
+name: local/immich
+pre_eval:
+  # disable body inspection for uploads
+  - filter: >
+      req.Host matches `^photos\.[a-z]+\.[a-z]+$`
+      && req.Method == "POST"
+      && req.URL.Path == "/api/assets"
+    apply:
+      - DisableBodyInspection()
