@@ -1,10 +1,5 @@
 name: local/copyparty
 pre_eval:
-  # disable allowed methods check for webdav
-  - filter: >
-      req.Host matches `^(?:drive|files)\.[a-z]+\.[a-z]+$`
-    apply:
-      - RemoveInBandRuleByID(911100)
   # disable body and content-type inspection for uploads
   # POST for web, PUT for WebDAV
   # assuming all writeable volumes are named [a-z]+
