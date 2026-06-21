@@ -20,8 +20,7 @@ External data like music library or file sharing folder can be placed outside of
 
 Every service can contain its own set of `.env` files. These files are represented as `*.env.example` files in the repo. Example files contain no secret info. They are copied to `*.env` files and populated with secret data during set up process. `*.env.example` files can contain persistent configuration that is not secret.
 
-
-## common services
+### common services
 There are common services:
 - caddy for reverse proxy
 - cloudflared for external public access
@@ -29,9 +28,61 @@ There are common services:
 - borg for local backups
 - rclone (with cron) for backing up data to the cloud
 
-## one-shot services
+### one-shot services
 One-shot services are basically scripts (e.g. download and unpack static files for AriaNG to be served by caddy) or heavy programs I rarely use (e.g. Windows VM, MusicBrainz Picard).  
 They are supposed to be manually started and stopped and are marked with `profiles: [do-not-start]` so `docker compose up` doesn't run them automatically.
+
+### networking
+All incoming HTTP/WebSockets requests pass through caddy. It's convenient to have one centralized config to know exactly how anything is served. Services do not expose their HTTP ports on the host machine, they only speak HTTP through caddy.  
+Non-http services (TCP/UDP, e.g. MQTT or DNS) may be exposed directly (using docker-compose `ports` option) but HTTP is preferred (e.g. MQTT over WSS, DNS over HTTPS). When exposing via HTTP is not possible, it's still preferred to proxy such traffic through caddy-l4 with crowdsec logging+remediation and maybe with TLS. 
+
+Public external access to HTTP services is provided by cloudflared. Currently I can't rent a VPS to host non-http tunneling software.
+Exposing non-http services through cloudflared requires users to run cloudflare software (cloudflared or warp) on their machines. This is not good. So non-http services are only available in private home network.  
+
+Isolation is good. Each service should use its own docker network (usually just basic bridge network). Different services don't share networks and can't communicate to each other so compromising one service keeps other services safe. When a service is spread across multiple containers (e.g. frontend, backend, database), those  containers share a network (typically named `servicename-back`), but only front-end container should be exposed to caddy (through another network typically named `servicename-front`).  
+
+The diagram below shows this architecture. User requests flow left-to-right. Oval-shaped containers are exposed on the host. Bold-outlined containers are exposed to caddy through separate `*-front` networks. Thin-dash-outlined containers are only available inside their `*-back` networks. 
+
+```mermaid
+graph LR
+  PU(("Private user"))--->|bridge:443/tcp,udp|C(["container-caddy"])
+  EU(("External user"))-->|internets|CF("container-cloudflared")
+  CF-->|"`_**net-cloudflared**_`"|C
+  C-->|"`_**net-a-front**_`"|AF("container-a-ui")
+  C-->|"`_**net-b-front**_`"|BF("container-b-ui")
+  C-->|"`_**net-c**_`"|sC("container-c-allinone")
+  C-->|"`_**net-d**_`"|D("container-d-allinone")
+  
+  style AF stroke-width:4px
+  style BF stroke-width:4px
+  style sC stroke-width:4px
+  style D stroke-width:4px
+  
+  PU--->|bridge:53/tcp,udp|DNS(["container-dns"])
+  PU--->|bridge:1883/tcp|MQTT(["container-mqtt"])
+  PU--->|bridge:5900/tcp|VNC(["container-vnc"])
+  PU--->|host:5353/udp|mDNS(["container-mdns"])
+  
+  subgraph "`_**net-a-back**_`"
+  AF<-.->AB("container-a-backend")
+  AB<-.->AD("container-a-database")
+  AB<-.->AW1("container-a-worker-1")
+  AB<-.->AW2("container-a-worker-2")
+  AD<-.->AW1
+  AD<-.->AW2
+  
+  style AB stroke-dasharray: 2 4,stroke-width:1px
+  style AD stroke-dasharray: 2 4,stroke-width:1px
+  style AW1 stroke-dasharray: 2 4,stroke-width:1px
+  style AW2 stroke-dasharray: 2 4,stroke-width:1px
+  end
+  
+  subgraph "`_**net-b-back**_`"
+  BF<-.->BB("container-b-backend")
+  style BB stroke-dasharray: 2 4,stroke-width:1px
+  end
+
+```
 
 
 ## system preparation
