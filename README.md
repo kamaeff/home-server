@@ -25,6 +25,7 @@ Every service can contain its own set of `.env` files. These files are represent
 There are common services:
 - caddy for reverse proxy
 - cloudflared for external public access
+- crowdsec with WAF and CRS rules enabled for protection
 - borg for local backups
 - rclone (with cron) for backing up data to the cloud
 
