@@ -24,7 +24,13 @@ Every service can contain its own set of `.env` files. These files are represent
 ## common services
 There are common services:
 - caddy for reverse proxy
+- cloudflared for external public access
+- borg for local backups
 - rclone (with cron) for backing up data to the cloud
+
+## one-shot services
+One-shot services are basically scripts (e.g. download and unpack static files for AriaNG to be served by caddy) or heavy programs I rarely use (e.g. Windows VM, MusicBrainz Picard).  
+They are supposed to be manually started and stopped and are marked with `profiles: [do-not-start]` so `docker compose up` doesn't run them automatically.
 
 
 ## system preparation
@@ -182,4 +188,5 @@ Use `docker compose pull <image-name>` to pull separate images.
 
 ## backups
 Separate services may back up using rclone.  
-You always can just tar the whole `~/home-server` and untar it on a new machine.  
+App data and file share are backed up to external SSD by borg. 
+`.env` files are not backed up currently. 
