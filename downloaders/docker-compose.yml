@@ -85,3 +85,14 @@ services:
       - "8000"
 #       - "9666" # optional Click'n'Load
     restart: always
+
+  metube:
+    image: ghcr.io/alexta69/metube
+    container_name: metube
+    networks:
+      - metube
+    expose:
+      - "8081"
+    volumes:
+      - ${DOWNLOADS_PATH:?}/youtube:/downloads
+    restart: always

@@ -88,6 +88,11 @@ pyload.{$SERVICE_DOMAIN} {
     import rproxy http://pyload:8000
 }
 
+yt-dlp.{$SERVICE_DOMAIN} {
+    import tls
+    import rproxy metube:8081
+}
+
 picard.{$SERVICE_DOMAIN} {
     import tls
     import rproxy picard:5800

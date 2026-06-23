@@ -19,6 +19,7 @@ services:
       - transmission
       - aria2
       - pyload
+      - metube
       - pihole
       - scrutiny
       - miniflux-front

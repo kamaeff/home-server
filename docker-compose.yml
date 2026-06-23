@@ -64,6 +64,7 @@ networks:
   transmission:
   aria2:
   pyload:
+  metube:
   immich-front:
   immich-back:
   geopulse-front:
