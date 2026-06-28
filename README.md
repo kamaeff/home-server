@@ -1,4 +1,4 @@
-r# home-server
+# home-server
 
 My docker-compose powered home server.  
 
@@ -112,7 +112,6 @@ systemctl status fstrim.timer
 systemctl cat fstrim.service
 ```
 
-Мониторинг SMART. Нужно написать скрипт, который будет регулярно гонять smartctl или `sudo nvme smart-log /dev/nvme0`. Писать отчёты в телегу или на почту. 
 S.M.A.R.T. monitoring. Currently done by Scrutiny with telegram alerts, but I may decide to switch to something different: smartd with custom scripts or [beszel](https://github.com/henrygd/beszel). 
 
 
