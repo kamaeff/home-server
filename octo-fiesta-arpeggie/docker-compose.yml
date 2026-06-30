@@ -1,39 +1,37 @@
 services:
-  navidrome:
+  arpeggi-tmp-navidrome:
     image: deluan/navidrome:latest
-    container_name: navidrome
+    container_name: arpeggi-tmp-navidrome
     user: 1000:1000 # should be owner of volumes
     restart: always
     networks:
-      - navidrome
+      - arpeggi-tmp-navidrome
     expose:
       - "4533"
     volumes:
-      - "${APP_DATA:?APP_DATA not set}/navidrome:/data"
+      - "${APP_DATA:?}/arpeggi-tmp-navidrome/data:/data"
       - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/music:ro"
-      - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}:/music-staging"
+      - "${APP_DATA:?}/arpeggi-tmp-navidrome/staging-library:/music-staging"
     environment:
       # - ND_LOGLEVEL=debug
       - ND_ENABLEINSIGHTSCOLLECTOR=false
-      - ND_ENABLESHARING=true
-      - ND_SHAREURL=https://music.${PERSONAL_DOMAIN:?}
+      - ND_ENABLESHARING=false
       - ND_PID_ALBUM=albumartistid,album,albumversion,releasedate
-      - ND_LISTENBRAINZ_BASEURL=https://lb-proxy.${SERVICE_DOMAIN:?SERVICE_DOMAIN not set}/1/
 
-  navidrome-octo-fiesta:
+  arpeggi-tmp-octo-fiesta:
 #     # 415198f is releases/v0.6
 #    image: ghcr.io/v1ck3s/octo-fiesta:dev
 #    build: https://github.com/kamaeff/octo-fiesta.git#feature/refactor-basedownloadservice
     build: ../../programming/octo-fiesta
-    container_name: navidrome-octo-fiesta
+    container_name: arpeggi-tmp-octo-fiesta
     user: 1000:1000
     restart: always
     networks:
-      - navidrome
+      - arpeggi-tmp-navidrome
     expose:
       - "8080"
     volumes:
-      - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}/octo-fiesta:/app/downloads"
+      - "${APP_DATA:?}/arpeggi-tmp-navidrome/staging-library:/app/downloads"
     tmpfs: /tmp
     env_file:
       - octo-fiesta.env

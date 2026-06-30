@@ -24,6 +24,8 @@ services:
       - scrutiny
       - miniflux-front
 
+      - arpeggi-tmp-navidrome
+
     ports:
       - 80:80
       - 443:443

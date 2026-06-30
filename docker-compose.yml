@@ -47,6 +47,10 @@ include:
   # - path: owui/docker-compose.yml
   #   env_file: .env
 
+
+  - path: octo-fiesta-arpeggie/docker-compose.yml
+    env_file: .env
+
 networks:
   cloudflared:
     driver: bridge
@@ -78,3 +82,6 @@ networks:
   miniflux-front:
   miniflux-back:
   # owui:
+
+
+  arpeggi-tmp-navidrome:

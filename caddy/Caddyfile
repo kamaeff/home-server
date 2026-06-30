@@ -159,3 +159,14 @@ feed.{$SERVICE_DOMAIN} {
 #     import tls
 #     import rproxy owui:8080
 # }
+
+
+tmp-navidrome.{$PERSONAL_DOMAIN} {
+    import external
+    import rproxy arpeggi-tmp-navidrome:4533
+}
+
+tmp-octo-fiesta.{$PERSONAL_DOMAIN} {
+    import external
+    import rproxy /rest/* arpeggi-tmp-octo-fiesta:8080
+}
