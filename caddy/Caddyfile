@@ -68,6 +68,11 @@ torrents.{$SERVICE_DOMAIN} {
     import tls
     import rproxy flood:3000
 }
+# raw transmission UI is needed sometimes when some features are missing in flood
+transmission.{$SERVICE_DOMAIN} {
+    import tls
+    import rproxy transmission:9091
+}
 
 aria.{$SERVICE_DOMAIN} {
     import tls
