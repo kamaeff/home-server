@@ -38,6 +38,7 @@
   ${USER1NAME}:${USER1PASS}
   ${USER2NAME}:${USER2PASS}
   books_ro:${BOOKS_RO_PASS}
+  media_ro:${MEDIA_RO_PASS}
 
 [groups]
   ${GROUP1NAME}: ${USER1NAME}, ${USER2NAME}
@@ -46,6 +47,7 @@
   /w
   accs:
     r: @${GROUP1NAME}
+    r: media_ro
 [/public]
   /w/public
   accs:
@@ -67,7 +69,7 @@
   accs:
     A: ${USER2NAME}
 [/fpkgi]
-  /w/${USER1NAME}/downloads
+  /w/${USER1NAME}/downloads/torrents/ps4-games
   accs:
     g: *
   flags:
@@ -76,7 +78,29 @@
   /w/${USER1NAME}/books
   accs:
     r: books_ro
+    r: media_ro
   flags:
     rss
     opds
     opds_exts: fb2,fb3,fbz,zip,epub,mobi,mp3,m4b,pdf,djvu
+# well, at this point I should consider folder restructurization, it's getting complex
+[/downloads]
+  /w/${USER1NAME}/downloads
+  accs:
+    r: media_ro
+[/uploads]
+  /w/${USER1NAME}/iphone-uploads
+  accs:
+    r: media_ro
+[/old-videos]
+  /w/${USER1NAME}/old-videos
+  accs:
+    r: media_ro
+[/music-downloads-staging]
+  /w/${USER1NAME}/music-downloads-staging
+  accs:
+    r: media_ro
+[/music-navidrome]
+  /w/${USER1NAME}/music-navidrome
+  accs:
+    r: media_ro
