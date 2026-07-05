@@ -84,6 +84,9 @@ graph LR
 
 ```
 
+It's preferred to explicitly mention container ports in docker-compose `expose` option despite that ports are usually already exposed in corresponding images. 
+Just for convenience, as an easy way to recall "which ports does this container use". 
+
 
 ## system preparation
 This software is supposed to run on Beelink ME Mini under Debian. 
