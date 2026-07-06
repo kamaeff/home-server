@@ -48,6 +48,8 @@
   accs:
     r: @${GROUP1NAME}
     r: media_ro
+  flags:
+    davauth
 [/public]
   /w/public
   accs:
