@@ -8,6 +8,7 @@
   name: nas-drive   # name displayed in web ui
   ansi              # enable colors in log messages (both in logfiles and stdout)
   usernames
+  hist: /hist
   shr: /shared-links
   shr-site: https://files.${PERSONAL_DOMAIN}/
   shr-adm: @${GROUP1NAME}
@@ -37,6 +38,7 @@
 [accounts]
   ${USER1NAME}:${USER1PASS}
   ${USER2NAME}:${USER2PASS}
+  obsidian:${OBSIDIAN_PASS}
   books_ro:${BOOKS_RO_PASS}
   media_ro:${MEDIA_RO_PASS}
 
@@ -76,6 +78,12 @@
     g: *
   flags:
     on404: /handlers/fpkgi.py
+# read-only for mysef to prevent random unwanted operations
+[/obsidian]
+  /w/obsidian
+  accs:
+    rwmd.: obsidian
+    r.: ${USER1NAME}
 [/books]
   /w/${USER1NAME}/books
   accs:
