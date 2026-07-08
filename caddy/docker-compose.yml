@@ -23,6 +23,7 @@ services:
       - pihole
       - scrutiny
       - miniflux-front
+      - memos
 
       - arpeggi-tmp-navidrome
 

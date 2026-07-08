@@ -44,6 +44,8 @@ include:
     env_file:
       - .env
       - ./miniflux/.env
+  - path: memos/docker-compose.yml
+    env_file: .env
   # - path: owui/docker-compose.yml
   #   env_file: .env
 
@@ -81,6 +83,7 @@ networks:
   scrutiny:
   miniflux-front:
   miniflux-back:
+  memos:
   # owui:
 
 

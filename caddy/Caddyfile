@@ -165,6 +165,32 @@ feed.{$SERVICE_DOMAIN} {
 #     import rproxy owui:8080
 # }
 
+memos.{$SERVICE_DOMAIN},
+memos.{$PERSONAL_DOMAIN} {
+    import external
+
+    # memos web ui tries to refresh token for unauthorized user
+    # which triggers crowdsec 401-bf scenario
+    # here we bypass that by aborting the request instead of 401
+    @api_refresh_without_token {
+        path /memos.api.v1.AuthService/RefreshToken
+        header !Authorization
+        header !Cookie
+    }
+    handle @api_refresh_without_token {
+        abort
+    }
+
+    @api path /api/v1/* /o/r/*
+    handle @api {
+        import rproxy mortis:5231
+    }
+
+    handle {
+        import rproxy memos:5230
+    }
+}
+
 
 tmp-navidrome.{$PERSONAL_DOMAIN} {
     import external

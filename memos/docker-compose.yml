@@ -1,0 +1,31 @@
+# Memos often introduces breaking changes.
+# Don't update unless really needed. 
+# Always use the same version for memos and mortis.
+services:
+  memos:
+    image: neosmemo/memos:0.29.1
+    container_name: memos
+    networks:
+      - memos
+    expose:
+      - 5230
+    volumes:
+      - ${APP_DATA:?}/memos:/var/opt/memos
+    environment:
+      MEMOS_PORT: 5230
+      MEMOS_DRIVER: sqlite
+      MEMOS_INSTANCE_URL: https://memos.${PERSONAL_DOMAIN:?}
+    restart: always
+
+# API compatibility proxy for moe memos
+  mortis:
+      image: ghcr.io/mudkipme/mortis:0.29.1
+      container_name: mortis
+      networks:
+        - memos
+      expose:
+        - 5231
+      entrypoint: ["/app/mortis"]
+      command: ["-grpc-addr=memos:5230"]
+      depends_on:
+        - memos
