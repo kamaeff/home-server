@@ -7,41 +7,49 @@ function main {
     DIRNAME="$(dirname "$(readlink -f "${0}")")"
     cd "${DIRNAME}"
 
+    yes_or_no "Create .env files?" &&
     create_env_files
-    setup_subdirs
+    
+    yes_or_no "Build and pull docker images?" &&
     docker_update
+
+    yes_or_no "Setup rclone?" &&
     setup_rclone
+
+    yes_or_no "Setup caddy?" &&
     setup_caddy
     echo "setup SUCCESS"
 }
 
-
 function create_env_files {
-    local example dot_env
-    for example in *.env.example; do
-        if [ "${example}" = '*.env.example' ]; then
-            echo 'no *.env.example files provided'
-            break
-        fi
+    local files example dot_env dir
 
+    files=(*.env.example)
+    if [ "${files}" = '*.env.example' ]; then
+        files=()
+    else
+        echo "${PWD}"
+    fi
+
+    for example in "${files[@]}"; do
         dot_env="${example%%\.example}"
         if [ -f "${dot_env}" ]; then
-            echo "'${dot_env}' already exists"
+            echo "    '${dot_env}' already exists"
             continue
         fi
-
-        cp "${example}" "${dot_env}"
-        read -ei "Press any key to fill '${dot_env}'"
-        nano "${dot_env}"
+        if yes_or_no "    Create '${dot_env}'?"; then
+            cp "${example}" "${dot_env}"
+            nano "${dot_env}"
+        fi
     done
-}
 
-function setup_subdirs {
+    # recurse into subdirs
+    # not using `find -name '*.env.example'` to avoid managing input redirection`
     for dir in */; do
-        echo "Setting .env files for ${dir}"
-        pushd "${dir}"
+        if [ "${dir}" = '*/' ] || [ ${dir} = '.git/' ]; then continue; fi
+        pushd "${dir}" >/dev/null
             create_env_files
-        popd
+        popd >/dev/null
     done
 }
 
@@ -60,6 +68,17 @@ function setup_caddy {
     docker compose run --rm caddy-build-static
     echo "Static files successfully built"
     echo "Caddy is set up"
+}
+
+function yes_or_no {
+    local yn
+    while true; do
+        read -p "$* [y/n]: " yn
+        case $yn in
+            [Yy]*) return 0  ;;  
+            [Nn]*) echo "Aborted" ; return  1 ;;
+        esac
+    done
 }
 
 
