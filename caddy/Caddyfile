@@ -109,11 +109,17 @@ music.{$PERSONAL_DOMAIN} {
     import rproxy navidrome:4533
 }
 
-# otcto-fiesta, don't expose non-subsonic API at all (testing)
+# octo-fiesta, don't expose non-subsonic API at all
 music2.{$SERVICE_DOMAIN},
 music2.{$PERSONAL_DOMAIN} {
     import external
     import rproxy /rest/* navidrome-octo-fiesta:8080
+}
+
+# audiomuse front end
+sonic.{$SERVICE_DOMAIN} {
+    import tls
+    import rproxy audiomuse-app:8000
 }
 
 photos.{$SERVICE_DOMAIN} {

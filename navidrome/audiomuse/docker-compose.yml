@@ -1,0 +1,70 @@
+services:
+  audiomuse-redis:
+    image: redis:7-alpine
+    container_name: audiomuse-redis
+    environment:
+      TZ: "${TZ:-UTC}"
+    networks:
+      - audiomuse-back
+    expose:
+      - "6379"
+    volumes:
+      - "${APP_DATA:?}/audiomuse/redis:/data"
+    restart: always
+
+  audiomuse-postgres:
+    image: postgres:15-alpine
+    container_name: audiomuse-postgres
+    env_file:
+      - ".env"
+    networks:
+      - audiomuse-back
+    expose:
+      - "5432"
+    volumes:
+      - "${APP_DATA:?}/audiomuse/db:/var/lib/postgresql/data"
+    restart: always
+
+  audiomuse-app:
+    image: ghcr.io/neptunehub/audiomuse-ai:${APP_VERSION:?}
+    container_name: audiomuse-app
+    networks:
+      - audiomuse-back
+      - navidrome
+    expose:
+      - "8000"
+    env_file:
+      - ".env"
+    environment:
+      SERVICE_TYPE: "flask" # Tells the container to run the Flask app
+    volumes:
+      - "${APP_DATA:?}/audiomuse/app-plugins:/app/plugin/installed"
+    tmpfs:
+      - "${TEMP_DIR?}"
+    depends_on:
+      - audiomuse-redis
+      - audiomuse-postgres
+    restart: always
+
+  audiomuse-worker:
+    image: ghcr.io/neptunehub/audiomuse-ai:${APP_VERSION:?}
+    container_name: audiomuse-worker
+    env_file:
+      - ".env"
+    networks:
+      - audiomuse-back
+      - navidrome
+    environment:
+      SERVICE_TYPE: "worker"
+    volumes:
+      - "${APP_DATA:?}/audiomuse/worker-plugins:/app/plugin/installed"
+    tmpfs:
+      - "${TEMP_DIR?}"
+    depends_on:
+      - audiomuse-redis
+      - audiomuse-postgres
+    restart: always
+#    deploy:
+#      mode: replicated
+#      replicas: 2
+

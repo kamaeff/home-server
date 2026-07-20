@@ -75,7 +75,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=${TZ:-Etc/UTC}
     volumes:
       - ${APP_DATA:?}/pyload:/config
       - ${DOWNLOADS_PATH:?}/pyload:/downloads

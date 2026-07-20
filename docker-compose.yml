@@ -16,6 +16,10 @@ include:
     env_file: .env
   - path: navidrome/docker-compose.yml
     env_file: .env
+  - path: navidrome/audiomuse/docker-compose.yml
+    env_file:
+      - .env
+      - ./navidrome/audiomuse/.env
   - path: picard/docker-compose.yml
     env_file: .env
   - path: downloaders/docker-compose.yml
@@ -65,6 +69,7 @@ networks:
   vw:
   copyparty:
   navidrome:
+  audiomuse-back:
   picard:
   slskd:
   transmission:
