@@ -10,13 +10,15 @@ services:
       - "4533"
     volumes:
       - "${APP_DATA:?}/navidrome:/data"
-      - "${MUSIC_LIBRARY_PATH:?}:/music:ro"
-      - "${MUSIC_STAGING_PATH:?}:/music-staging"
+      - "${MUSIC_ROOT_PATH:?}/library:/music:ro"
+      - "${MUSIC_ROOT_PATH:?}/staging:/music-staging:ro"
+      - "${MUSIC_ROOT_PATH:?}/explore:/music-explore:ro"
     environment:
       # - ND_LOGLEVEL=debug
       - ND_PLUGINS_ENABLED=true
       - ND_PLUGINS_AUTORELOAD=true
       - ND_AGENTS=audiomuseai,deezer,lastfm,listenbrainz
+      - ND_SCANNER_PURGEMISSING=always # for exlpo to move downloads from staging to explore
       - ND_ENABLEINSIGHTSCOLLECTOR=false
       - ND_ENABLESHARING=true
       - ND_SHAREURL=https://music.${PERSONAL_DOMAIN:?}
@@ -36,7 +38,34 @@ services:
     expose:
       - "8080"
     volumes:
-      - "${MUSIC_STAGING_PATH:?}/octo-fiesta:/app/downloads"
+      - "${MUSIC_ROOT_PATH:?}/staging/octo-fiesta:/app/downloads"
     tmpfs: /tmp
     env_file:
       - octo-fiesta.env
+
+# I wanted to develop my own solution to retrieve ListenBrainz recommendations
+# leveraging existing octo-fiesta downloading capabilities.
+# It would be called octo-explore. 
+# ATM I'm looking for a job and have no time and mental capacity for development.
+# That's why I decided to use Explo.
+# And also I made some calculations. According to them
+# explo would kill my NVMe drive in at least 300 years. I think that
+# it is more than acceptable.
+  explo:
+    image: ghcr.io/lumepart/explo:v1.1.2 # please please please read the relase notes
+    restart: always
+    container_name: explo
+    env_file:
+      - explo.env
+    networks:
+      - navidrome
+      - slskd
+    expose:
+      - "7288"
+    volumes:
+      - "./explo.env:/opt/explo/.env:ro"
+      - "${APP_DATA:?}/explo/config:/opt/explo/config"
+      - "${MUSIC_ROOT_PATH:?}/explore/explo:/data/"
+      - "${MUSIC_ROOT_PATH:?}/staging/slskd:/slskd/"
+    tmpfs:
+      - "/opt/explo/config/logs"

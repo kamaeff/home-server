@@ -10,7 +10,7 @@ services:
       - "4533"
     volumes:
       - "${APP_DATA:?}/arpeggi-tmp-navidrome/data:/data"
-      - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/music:ro"
+      - "${MUSIC_ROOT_PATH:?}/library:/music:ro"
       - "${APP_DATA:?}/arpeggi-tmp-navidrome/staging-library:/music-staging"
     environment:
       # - ND_LOGLEVEL=debug

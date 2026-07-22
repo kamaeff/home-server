@@ -106,11 +106,7 @@
   /w/${USER1NAME}/old-videos
   accs:
     r: media_ro
-[/music-downloads-staging]
-  /w/${USER1NAME}/music-downloads-staging
-  accs:
-    r: media_ro
-[/music-navidrome]
-  /w/${USER1NAME}/music-navidrome
+[/music]
+  /w/${USER1NAME}/music
   accs:
     r: media_ro

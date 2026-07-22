@@ -14,10 +14,10 @@ services:
     env_file:
       - slskd.env
     volumes:
-      - "${APP_DATA:?APP_DATA not set}/slskd/app_data:/app"
-      - "${APP_DATA:?APP_DATA not set}/slskd/incomplete:/app/incomplete"
-      - "${MUSIC_STAGING_PATH:?MUSIC_STAGING_PATH not set}/slskd:/app/downloads"
-      - "${MUSIC_LIBRARY_PATH:?MUSIC_LIBRARY_PATH not set}:/slskd-shares/navidrome:ro"
+      - "${APP_DATA:?}/slskd/app_data:/app"
+      - "${APP_DATA:?}/slskd/incomplete:/app/incomplete"
+      - "${MUSIC_ROOT_PATH:?}/staging/slskd:/app/downloads"
+      - "${MUSIC_ROOT_PATH:?}/library:/slskd-shares/navidrome:ro"
 
   flood:
     image: jesec/flood
@@ -31,8 +31,8 @@ services:
       - "HOME=/config"
       - "FLOOD_OPTION_allowedpath=/downloads"
     volumes:
-      - "${DOWNLOADS_PATH:?DOWNLOADS_PATH not set}/torrents/:/downloads:ro"
-      - "${APP_DATA:?APP_DATA not set}/flood:/config"
+      - "${DOWNLOADS_PATH:?}/torrents/:/downloads:ro"
+      - "${APP_DATA:?}/flood:/config"
     restart: always
 
   transmission:
@@ -49,8 +49,8 @@ services:
     env_file:
       - transmission.env
     volumes:
-      - "${DOWNLOADS_PATH:?DOWNLOADS_PATH not set}/torrents/:/downloads"
-      - "${APP_DATA:?APP_DATA not set}/transmission/:/config"
+      - "${DOWNLOADS_PATH:?}/torrents/:/downloads"
+      - "${APP_DATA:?}/transmission/:/config"
       # here can be added an optional watch directory
     restart: always
 
@@ -65,8 +65,8 @@ services:
     env_file:
       - aria2.env
     volumes:
-      - "${APP_DATA:?APP_DATA not set}/aria2/:/aria2-data"
-      - "${DOWNLOADS_PATH:?DOWNLOADS_PATH not set}/aria/:/downloads"
+      - "${APP_DATA:?}/aria2/:/aria2-data"
+      - "${DOWNLOADS_PATH:?}/aria/:/downloads"
     restart: always
 
   pyload:

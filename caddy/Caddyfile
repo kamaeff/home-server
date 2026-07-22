@@ -122,6 +122,11 @@ sonic.{$SERVICE_DOMAIN} {
     import rproxy audiomuse-app:8000
 }
 
+explo.{$SERVICE_DOMAIN} {
+    import tls
+    import rproxy explo:7288
+}
+
 photos.{$SERVICE_DOMAIN} {
     # once published, enable appsec and crowdsec, but disable appsec for upload endpoint
     # https://github.com/crowdsecurity/crowdsec/issues/3837

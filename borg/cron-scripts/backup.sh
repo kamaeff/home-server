@@ -16,6 +16,7 @@ borg create -v --stats '/backups/home-server::app-data-{utcnow}' \
     --exclude='/app-data/immich/library/encoded-video' \
     --exclude='/app-data/immich/library/thumbs' \
     --exclude='/app-data/navidrome/cache' \
+    --exclude='/app-data/explo' \
     -- /app-data
 
 [ -n "${FILESHARE_SUBPATH_1}" ]
@@ -23,7 +24,8 @@ borg create -v --stats '/backups/home-server::app-data-{utcnow}' \
 
 borg create -v --stats '/backups/home-server::fileshare-{utcnow}' \
     --exclude="/fileshare/${FILESHARE_SUBPATH_1}/downloads" \
-    --exclude="/fileshare/${FILESHARE_SUBPATH_1}/music-downloads-staging" \
+    --exclude="/fileshare/${FILESHARE_SUBPATH_1}/music/staging" \
+    --exclude="/fileshare/${FILESHARE_SUBPATH_1}/music/explore" \
     --exclude="/fileshare/${FILESHARE_SUBPATH_2}/ФИЛЬМЫ И СЕРИАЛЫ/" \
     -- /fileshare
 
