@@ -1,0 +1,29 @@
+{
+    "public-archive-talks-mono-opus-32kbps": {
+        "outtmpl": "%(uploader,uploader_id,channel,channel_id|_UNKNOWN)s/%(upload_date>%Y-%m-%d)s %(title)s (%(display_id,id)s).%(ext)s",
+        "paths": {
+            "temp": "/downloads/tmpfs",
+            "home": "/downloads/public-archive"
+        },
+        "overwrites": false,
+        "format": "bestaudio",
+        "postprocessors": [
+            {
+                "key": "SponsorBlock",
+                "categories": ["sponsor"]
+            },
+            {
+                "key": "ModifyChapters",
+                "remove_sponsor_segments": ["sponsor"]
+            }
+        ],
+        "postprocessor_args": {
+            "ffmpeg": [
+                "-acodec", "libopus",
+                "-ac", "1",
+                "-b:a", "32k",
+                "-threads", "4"
+            ]
+        }
+    }
+}

@@ -93,6 +93,14 @@ services:
       - metube
     expose:
       - "8081"
+    environment:
+      - "LOGLEVEL=DEBUG"
+      - "YTDL_OPTIONS={}"
+      - "YTDL_OPTIONS_PRESETS_FILE=/etc/metube-ytdlp-presets.json"
     volumes:
-      - ${DOWNLOADS_PATH:?}/youtube:/downloads
+      - "${DOWNLOADS_PATH:?}/youtube:/downloads"
+      - "${FILESHARE_PATH:?}/public/youtube-archive:/downloads/public-archive"
+      - "./metube-ytdlp-presets.json:/etc/metube-ytdlp-presets.json:ro"
+    tmpfs:
+      - /downloads/tmpfs
     restart: always
