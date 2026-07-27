@@ -3,7 +3,7 @@
 # Always use the same version for memos and mortis.
 services:
   memos:
-    image: neosmemo/memos:0.29.1
+    image: neosmemo/memos:0.30.0
     container_name: memos
     networks:
       - memos
@@ -19,7 +19,7 @@ services:
 
 # API compatibility proxy for moe memos
   mortis:
-      image: ghcr.io/mudkipme/mortis:0.29.1
+      image: ghcr.io/mudkipme/mortis:0.30.0
       container_name: mortis
       networks:
         - memos
