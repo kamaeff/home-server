@@ -44,12 +44,12 @@ services:
   caddy-build-static:
     profiles:
       - do-not-start
-    image: alpine:latest
+    image: alpine/git:latest
     container_name: caddy-build-static
     volumes:
       - ${APP_DATA:?APP_DATA not set}/caddy/static:/static
       - ./build-static.sh:/build-static.sh:ro
     tmpfs:
       - /tmp
-    command: /bin/sh /build-static.sh
+    entrypoint: /bin/sh /build-static.sh
     restart: on-failure:3

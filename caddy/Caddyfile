@@ -98,6 +98,16 @@ yt-dlp.{$SERVICE_DOMAIN} {
     import rproxy metube:8081
 }
 
+# probably should host it on github/cloudflare/codeberg pages
+# for public availability
+ps4jb.{$SERVICE_DOMAIN},
+ps4jb.{$PERSONAL_DOMAIN} {
+    import external
+    file_server {
+        root /static/ps4-jb-webkit
+    }
+}
+
 picard.{$SERVICE_DOMAIN} {
     import tls
     import rproxy picard:5800
