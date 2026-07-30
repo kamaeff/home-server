@@ -1,0 +1,8 @@
+FROM ghcr.io/alexta69/metube:latest
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        intel-media-va-driver \
+        libvpl2 \
+        libmfx-gen1.2 && \
+    rm -rf /var/lib/apt/lists/*

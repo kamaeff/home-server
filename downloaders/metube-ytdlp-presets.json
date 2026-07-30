@@ -22,7 +22,51 @@
                 "-acodec", "libopus",
                 "-ac", "1",
                 "-b:a", "32k",
+
                 "-threads", "4"
+            ]
+        }
+    },
+    "public-archive-slideshow-hevc-720p-aac-mono-64kbps-mp4": {
+        "outtmpl": "%(uploader,uploader_id,channel,channel_id|_UNKNOWN)s/%(upload_date>%Y-%m-%d)s %(title)s (%(display_id,id)s).%(ext)s",
+        "paths": {
+            "temp": "/downloads/tmpfs",
+            "home": "/downloads/public-archive"
+        },
+        "overwrites": false,
+        "format": "bv*[height<=1440][vcodec~='^(vp9|vp09)']+ba/bv*[height<=1440][vcodec~='^(hvc1|hev1|hevc)']+ba/bv*[height<=1440][vcodec~='^(avc1|h264)']+ba/b",
+        "merge_output_format": "mp4",
+        "postprocessors": [
+            {
+                "key": "SponsorBlock",
+                "categories": ["sponsor"]
+            },
+            {
+                "key": "ModifyChapters",
+                "remove_sponsor_segments": ["sponsor"]
+            },
+            {
+                "key": "FFmpegCopyStream"
+            }
+        ],
+        "postprocessor_args": {
+            "copystream+ffmpeg_i": [
+                "-vaapi_device", "/dev/dri/renderD128",
+                "-hwaccel", "vaapi",
+                "-hwaccel_output_format", "vaapi"
+            ],
+            "copystream+ffmpeg_o": [
+                "-vf", "scale_vaapi=w=-2:h=720,fps=24",
+                "-vcodec", "hevc_vaapi",
+                "-qp", "26",
+                "-tag:v", "hvc1",
+
+                "-acodec", "aac",
+                "-ac", "1",
+                "-b:a", "64k",
+
+                "-f", "mp4",
+                "-movflags", "+faststart"
             ]
         }
     }
