@@ -55,7 +55,7 @@ services:
     restart: always
 
   aria2:
-    build: ./aria2-build
+    build: ./aria2
     container_name: aria2
     user: 1000:1000
     networks:
@@ -63,7 +63,7 @@ services:
     expose:
       - "6800"
     env_file:
-      - aria2.env
+      - ./aria2/aria2.env
     volumes:
       - "${APP_DATA:?}/aria2/:/aria2-data"
       - "${DOWNLOADS_PATH:?}/aria/:/downloads"
@@ -87,7 +87,7 @@ services:
     restart: always
 
   metube:
-    build: ./metube-build
+    build: ./metube
     container_name: metube
     networks:
       - metube
@@ -101,7 +101,7 @@ services:
     volumes:
       - "${DOWNLOADS_PATH:?}/youtube:/downloads"
       - "${FILESHARE_PATH:?}/public/youtube-archive:/downloads/public-archive"
-      - "./metube-ytdlp-presets.json:/etc/metube-ytdlp-presets.json:ro"
+      - "./metube/ytdlp-presets.json:/etc/metube-ytdlp-presets.json:ro"
     tmpfs:
       - /downloads/tmpfs
     devices:
