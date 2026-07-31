@@ -2,7 +2,7 @@
     "public-archive-talks-mono-opus-32kbps": {
         "outtmpl": "%(uploader,uploader_id,channel,channel_id|_UNKNOWN)s/%(upload_date>%Y-%m-%d)s %(title)s (%(display_id,id)s).%(ext)s",
         "paths": {
-            "temp": "/downloads/tmpfs",
+            "temp": "/tmp",
             "home": "/downloads/public-archive"
         },
         "overwrites": false,
@@ -30,7 +30,7 @@
     "public-archive-slideshow-hevc-720p-aac-mono-64kbps-mp4": {
         "outtmpl": "%(uploader,uploader_id,channel,channel_id|_UNKNOWN)s/%(upload_date>%Y-%m-%d)s %(title)s (%(display_id,id)s).%(ext)s",
         "paths": {
-            "temp": "/downloads/tmpfs",
+            "temp": "/tmp",
             "home": "/downloads/public-archive"
         },
         "overwrites": false,
