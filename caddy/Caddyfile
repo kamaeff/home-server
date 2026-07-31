@@ -59,6 +59,12 @@ files.{$SERVICE_DOMAIN} {
     import rproxy copyparty:3923
 }
 
+office.{$SERVICE_DOMAIN} {
+    import tls
+    @collabora path /browser* /hosting/discovery* /hosting/capabilities* /cool/*
+    import rproxy @collabora http://collabora:9980
+}
+
 slskd.{$SERVICE_DOMAIN} {
     import tls
     import rproxy slskd:5030

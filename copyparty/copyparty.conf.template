@@ -18,9 +18,12 @@
   e2ts              # enable multimedia indexing
   daw               # enable proper WebDAV
   u2ow: 1           # overwrite files on upload if same name and uploaded file is newer
+  wopi
+  wopi-url: https://office.${SERVICE_DOMAIN}
 
 # reverse proxy
   xff-hdr: x-real-ip
+  # since installing collabora we are trusting it to not send us xff header until changing the networks to make it impossible
   xff-src: lan      # trust x-forwarded-for header for requests coming from these networks # lan is fine since only caddy is in lan
   rproxy: 1         # which ip to associate clients with; [0]=tcp, [1]=origin (first x-fwd, unsafe), [2]=outermost-proxy, [3]=second-proxy, [-1]=closest-proxy
 
