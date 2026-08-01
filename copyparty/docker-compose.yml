@@ -68,7 +68,6 @@ services:
       extra_params:
         --o:ssl.enable=false
         --o:ssl.termination=true
-      server_name: "office.${SERVICE_DOMAIN:?}"
       dictionaries: "en_US en_GB ru"
       aliasgroup1: "http://copyparty:3923,https://files.${PERSONAL_DOMAIN:?},https://files.${SERVICE_DOMAIN:?},https://drive.${SERVICE_DOMAIN:?}"
     cap_drop:

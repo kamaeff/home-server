@@ -48,21 +48,64 @@ vw-ext.{$SERVICE_DOMAIN} {
     import rproxy vw:80
 }
 
-drive.{$SERVICE_DOMAIN} {
+# internal copyparty
+https://drive.{$SERVICE_DOMAIN} {
     import tls
     import rproxy copyparty:3923
 }
 
-files.{$PERSONAL_DOMAIN},
+# faster cleartext http for PS4 FPKGi copyparty
+http://drive.{$SERVICE_DOMAIN} {
+    handle /fpkgi/* {
+        import rproxy copyparty:3923
+    }
+    handle {
+        redir https://drive.{$SERVICE_DOMAIN}{uri} permanent
+    }
+}
+
+# public copyparty
+files.{$PERSONAL_DOMAIN} {
+    import external
+    # disable public GET access to /fpkgi/ volume
+    handle /fpkgi/* {
+        redir https://youtu.be/dQw4w9WgXcQ permanent
+    }
+    handle {
+        import rproxy copyparty:3923
+    }
+}
+
 files.{$SERVICE_DOMAIN} {
     import external
-    import rproxy copyparty:3923
+    @allow path /shared-links/* /.cpr/*
+    handle @allow {
+        import rproxy copyparty:3923
+    }
+    handle {
+        redir https://youtu.be/dQw4w9WgXcQ permanent
+    }
+}
+
+(collabora) {
+    @collabora path_regexp ^/(browser|cool|hosting/(discovery|capabilities))(/.*)?$
+    handle @collabora {
+        import rproxy http://collabora:9980
+    }
+    handle {
+        redir https://youtu.be/dQw4w9WgXcQ permanent
+    }
 }
 
 office.{$SERVICE_DOMAIN} {
     import tls
-    @collabora path /browser* /hosting/discovery* /hosting/capabilities* /cool/*
-    import rproxy @collabora http://collabora:9980
+    import collabora
+}
+
+office.{$PERSONAL_DOMAIN},
+office-ext.{$SERVICE_DOMAIN} {
+    import external
+    import collabora
 }
 
 slskd.{$SERVICE_DOMAIN} {
