@@ -70,11 +70,7 @@ services:
         --o:ssl.termination=true
       dictionaries: "en_US en_GB ru"
       aliasgroup1: "https://files.${PERSONAL_DOMAIN:?},https://files.${SERVICE_DOMAIN:?},https://drive.${SERVICE_DOMAIN:?}"
-    cap_drop:
-      - ALL
-    cap_add:
-      - SYS_CHROOT
-      - SYS_ADMIN
-      - FOWNER
-      - CHOWN
+    security_opt:
+      - apparmor=unconfined # insecure, https://github.com/CollaboraOnline/online/issues/13972
+      - seccomp=./copyparty/collabora-seccomp-profile.json # unfortunately paths are resolved from main docker-compose.yml directory
     restart: always
