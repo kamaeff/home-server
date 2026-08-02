@@ -4,28 +4,37 @@ services:
     container_name: caddy
     restart: always
     networks:
-      - cloudflared
-      - crowdsec-front
+      cloudflared:
+      crowdsec-front:
 
-      - vw
-      - copyparty
-      - navidrome
-      - picard
-      - immich-front
-      - geopulse-front
-      - hauk-front
-      - linkwarden-front
-      - slskd
-      - transmission
-      - aria2
-      - pyload
-      - metube
-      - pihole
-      - scrutiny
-      - miniflux-front
-      - memos
+      vw:
+      copyparty:
+        aliases:
+          # force collabora backend to connect to copyparty internally through caddy
+          - drive.${SERVICE_DOMAIN:?}
+          - files.${SERVICE_DOMAIN:?}
+          - files.${PERSONAL_DOMAIN:?}
+          # force copyparty backend to connect to collabora internally through caddy
+          - office.${SERVICE_DOMAIN:?}
+          - office-ext.${SERVICE_DOMAIN:?}
+          - office.${PERSONAL_DOMAIN:?}
+      navidrome:
+      picard:
+      immich-front:
+      geopulse-front:
+      hauk-front:
+      linkwarden-front:
+      slskd:
+      transmission:
+      aria2:
+      pyload:
+      metube:
+      pihole:
+      scrutiny:
+      miniflux-front:
+      memos:
 
-      - arpeggi-tmp-navidrome
+      arpeggi-tmp-navidrome:
 
     ports:
       - 80:80

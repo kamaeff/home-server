@@ -48,10 +48,24 @@ vw-ext.{$SERVICE_DOMAIN} {
     import rproxy vw:80
 }
 
+(copyparty_forbid_external_wopi) {
+    @external_wopi {
+        path /wopi*
+        not client_ip 10.0.1.0/24
+    }
+    handle @external_wopi {
+        respond "Am I debugging? Nope. So who you are and what are you doing here?" 403
+    }
+}
+
 # internal copyparty
 https://drive.{$SERVICE_DOMAIN} {
     import tls
-    import rproxy copyparty:3923
+    import copyparty_forbid_external_wopi
+
+    handle {
+        import rproxy copyparty:3923
+    }
 }
 
 # faster cleartext http for PS4 FPKGi copyparty
@@ -67,6 +81,8 @@ http://drive.{$SERVICE_DOMAIN} {
 # public copyparty
 files.{$PERSONAL_DOMAIN} {
     import external
+    import copyparty_forbid_external_wopi
+
     # disable public GET access to /fpkgi/ volume
     handle /fpkgi/* {
         redir https://youtu.be/dQw4w9WgXcQ permanent
@@ -78,6 +94,8 @@ files.{$PERSONAL_DOMAIN} {
 
 files.{$SERVICE_DOMAIN} {
     import external
+    # import copyparty_forbid_external_wopi # not in use since @allow already handles it
+
     @allow path /shared-links/* /.cpr/*
     handle @allow {
         import rproxy copyparty:3923
@@ -88,10 +106,19 @@ files.{$SERVICE_DOMAIN} {
 }
 
 (collabora) {
+    @external_wopi_forbid {
+        not client_ip 10.0.1.0/24
+        path /hosting /hosting/*
+    }
+    handle @external_wopi_forbid {
+        respond "Am I debugging? Nope. So who you are and what are you doing here?" 403
+    }
+
     @collabora path_regexp ^/(browser|cool|hosting/(discovery|capabilities))(/.*)?$
     handle @collabora {
         import rproxy http://collabora:9980
     }
+
     handle {
         redir https://youtu.be/dQw4w9WgXcQ permanent
     }

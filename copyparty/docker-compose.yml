@@ -69,7 +69,7 @@ services:
         --o:ssl.enable=false
         --o:ssl.termination=true
       dictionaries: "en_US en_GB ru"
-      aliasgroup1: "http://copyparty:3923,https://files.${PERSONAL_DOMAIN:?},https://files.${SERVICE_DOMAIN:?},https://drive.${SERVICE_DOMAIN:?}"
+      aliasgroup1: "https://files.${PERSONAL_DOMAIN:?},https://files.${SERVICE_DOMAIN:?},https://drive.${SERVICE_DOMAIN:?}"
     cap_drop:
       - ALL
     cap_add:

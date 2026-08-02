@@ -70,6 +70,10 @@ networks:
 
   vw:
   copyparty:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.1.0/24
   navidrome:
   audiomuse-back:
   picard:
