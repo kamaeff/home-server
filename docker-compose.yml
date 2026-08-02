@@ -58,11 +58,13 @@ include:
     env_file: .env
 
 networks:
+# use /24 subnets from 10.0.0.0/8 for custom networks
+# default ranges are taken from default-address-pools and are /24 subnets from 172.16.0.0/12
   cloudflared:
     driver: bridge
     ipam:
       config:
-        - subnet: 192.168.0.0/24
+        - subnet: 10.0.0.0/24
   crowdsec-back:
   crowdsec-front:
 

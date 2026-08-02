@@ -15,7 +15,7 @@
         strict_sni_host on
         trusted_proxies_strict
 	    # cloudflared tunnels
-        trusted_proxies static 192.168.0.0/24
+        trusted_proxies static 10.0.0.0/24
         client_ip_headers CF-Connecting-IP
     }
 }

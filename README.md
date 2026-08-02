@@ -191,6 +191,28 @@ Well, SDDM doesn't use much resources, and Plasma isn't running. So it's unneces
 - setup.sh assumes it is run under Debian
 - setup.sh may be used to rebuild locally-built images and pull latest images from hub
 
+### set up default address pools for docker networks
+By default docker uses /16 subnets from 172.16.0.0/12 and /20 subnets from 192.168.0.0/16.
+- it creates small number (31) of large(thousands of IP addresses) subnets, but I rarely have more than 5 containers in single networks and I also tend to create new networks for anything, so it's preferrable to have a large number of small subnets.
+- it can conflict with existing LAN networks
+- it can also conflict with manually created networks with custom IPAM settings
+
+To address this, the default address pools of docker daemon should be overwritten in `/etc/docker/daemon.json` to create /24 subnets in base range of 172.16.0.0/12. Example:
+```json
+{
+  "log-driver": "journald",
+  "default-address-pools": [
+    {
+      "base" : "172.16.0.0/12",
+      "size" : 24
+    }
+  ]
+}
+```
+
+For manually managed networks prefer /24 subnets from `10.0.0.0/8`. This separates manually managed networks from daemon-managed ones, eliminating collisions between them. 
+This also avoids possible collisions with home LAN networks from `192.168.0.0/16`.
+
 ### external access
 For external access use tailscale. 
 
