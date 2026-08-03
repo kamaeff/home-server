@@ -59,6 +59,7 @@ services:
   collabora:
     image: collabora/code:26.04.2.4.1
     container_name: collabora
+    user: 1001:1001
     networks:
       - copyparty
     expose:
