@@ -23,6 +23,7 @@
   wopi-urls: drive.${SERVICE_DOMAIN}=https://office.${SERVICE_DOMAIN}
   wopi-urls: files.${PERSONAL_DOMAIN}=https://office.${PERSONAL_DOMAIN}
   wopi-urls: files.${SERVICE_DOMAIN}=https://office-ext.${SERVICE_DOMAIN}
+  wopi-ttl: 14400
 
 # reverse proxy
   xff-hdr: x-real-ip
