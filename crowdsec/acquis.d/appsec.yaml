@@ -2,6 +2,7 @@ appsec_configs:
   - local/common
   - local/copyparty
   - local/immich
+  - local/memos
   - crowdsecurity/appsec-default
   - crowdsecurity/crs-inband   # blocks and bans, playing around
 labels:

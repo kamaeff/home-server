@@ -1,0 +1,18 @@
+name: local/memos
+pre_eval:
+  # disable body inspection for memos
+  # to stop triggering RCE by valid contents of memos
+  # I guess it's better to make a crs plugin magic only skipping request json body zone
+  # but have no time now to do that
+  - filter: >
+      req.Host matches `^memos\.[a-z]+\.[a-z]+$`
+      && (
+        req.Method == "POST" && req.URL.Path matches `^/api/v1/memo/?$`
+        ||
+        req.Method == "PATCH" && req.URL.Path startsWith "/api/v1/memo/"
+      )
+    apply:
+      # - DisableBodyInspection()
+      - RemoveInBandRuleByID(932230)
+      - RemoveInBandRuleByID(932115)
+      - RemoveInBandRuleByID(932380) # in CRSv4 932380 replaces 932115
