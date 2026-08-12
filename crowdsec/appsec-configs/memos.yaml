@@ -16,3 +16,4 @@ pre_eval:
       - RemoveInBandRuleByID(932230)
       - RemoveInBandRuleByID(932115)
       - RemoveInBandRuleByID(932380) # in CRSv4 932380 replaces 932115
+      - RemoveInBandRuleByID(932235)
