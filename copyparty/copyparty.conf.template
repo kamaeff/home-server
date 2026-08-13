@@ -41,6 +41,8 @@
   # https://copyparty.eu/cli/#ls-help-page
   ls: *,*,ln,p,r
 
+  ipu: 192.168.31.125/32=playstation4
+  ipr: 192.168.31.125/32=playstation4
 
 [accounts]
   ${USER1NAME}:${USER1PASS}
@@ -48,6 +50,7 @@
   obsidian:${OBSIDIAN_PASS}
   books_ro:${BOOKS_RO_PASS}
   media_ro:${MEDIA_RO_PASS}
+  playstation4:hunter2
 
 [groups]
   ${GROUP1NAME}: ${USER1NAME}, ${USER2NAME}
@@ -57,15 +60,16 @@
   accs:
     r: @${GROUP1NAME}
     r: media_ro
+    g: playstation4
   flags:
     davauth
+    on404: /handlers/fpkgi.py
 [/public]
   /w/public
   accs:
     r: *
     A: ${USER1NAME}
   flags:
-    dthumb
     dotpart
 [/share]
   /w/share
@@ -75,16 +79,11 @@
   /w/${USER1NAME}
   accs:
     A: ${USER1NAME}
+    g: playstation4
 [/${USER2NAME}]
   /w/${USER2NAME}
   accs:
     A: ${USER2NAME}
-[/fpkgi]
-  /w/${USER1NAME}/downloads/torrents/ps4-games
-  accs:
-    g: *
-  flags:
-    on404: /handlers/fpkgi.py
 # read-only for mysef to prevent random unwanted operations
 [/obsidian]
   /w/obsidian

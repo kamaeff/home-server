@@ -70,7 +70,10 @@ https://drive.{$SERVICE_DOMAIN} {
 
 # faster cleartext http for PS4 FPKGi copyparty
 http://drive.{$SERVICE_DOMAIN} {
-    handle /fpkgi/* {
+    @playstation4 {
+        client_ip 192.168.31.125
+    }
+    handle @playstation4 {
         import rproxy copyparty:3923
     }
     handle {
@@ -83,10 +86,6 @@ files.{$PERSONAL_DOMAIN} {
     import external
     import copyparty_forbid_external_wopi
 
-    # disable public GET access to /fpkgi/ volume
-    handle /fpkgi/* {
-        redir https://youtu.be/dQw4w9WgXcQ permanent
-    }
     handle {
         import rproxy copyparty:3923
     }
