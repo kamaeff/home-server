@@ -86,6 +86,17 @@ files.{$PERSONAL_DOMAIN} {
     import external
     import copyparty_forbid_external_wopi
 
+    @anonymous_index {
+        path /
+        not header_regexp Cookie "(?:^|;| )cppws=[\w_=-]+(?:$|;| )"
+        not query pw=*
+        not header Authorization *
+        not header PW *
+    }
+    handle @anonymous_index {
+        redir / /public/{orig_?query} permanent
+    }
+
     handle {
         import rproxy copyparty:3923
     }
@@ -113,7 +124,7 @@ files.{$SERVICE_DOMAIN} {
         respond "Am I debugging? Nope. So who you are and what are you doing here?" 403
     }
 
-    @collabora path_regexp ^/(browser|cool|hosting/(discovery|capabilities))(/.*)?$
+    @collabora path_regexp ^/(?:browser|cool|hosting/(?:discovery|capabilities))(?:/.*)?$
     handle @collabora {
         import rproxy http://collabora:9980
     }
