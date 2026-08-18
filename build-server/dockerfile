@@ -1,0 +1,7 @@
+FROM hermsi/alpine-sshd:latest
+ENV SSH_USERS=builder:1001:1001
+RUN apk add --no-cache \
+    make gcc yasm file py3-rjsmin # fpkg-toolbox
+# idgaf about these throwaway keys lol
+RUN echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKnMnSnLijyJ+8cTbMIENbiBaLTuKl/XSlZWyf+lJvkA' > /conf.d/authorized_keys/builder
+EXPOSE 22

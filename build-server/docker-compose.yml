@@ -1,0 +1,9 @@
+services:
+  build-server:
+    build: .
+    container_name: build-server
+    restart: always
+    ports:
+      - "23:22"
+    volumes:
+      - "${APP_DATA:?}/build-server/ssh:/etc/ssh"

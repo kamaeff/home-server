@@ -52,6 +52,8 @@ include:
     env_file: .env
   # - path: owui/docker-compose.yml
   #   env_file: .env
+  - path: build-server/docker-compose.yml
+    env_file: .env
 
 
   - path: octo-fiesta-arpeggie/docker-compose.yml
