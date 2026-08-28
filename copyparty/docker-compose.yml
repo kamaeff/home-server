@@ -1,6 +1,7 @@
 x-volumes:
   - &config ${APP_DATA:?APP_DATA not set}/copyparty/cfg:/cfg:z
   - &hist ${APP_DATA:?APP_DATA not set}/copyparty/hist:/hist:z
+  - &remote_plugins ${APP_DATA:?APP_DATA not set}/copyparty/remote_plugins:/remote_plugins:z
   - &fileshare ${FILESHARE_PATH:?FILESHARE_PATH not set}:/w:z
   - &config_template ./copyparty.conf.template:/copyparty.conf.template:ro
 
@@ -19,9 +20,26 @@ services:
       PERSONAL_DOMAIN: ${PERSONAL_DOMAIN:?}
       SERVICE_DOMAIN: ${SERVICE_DOMAIN:?}
 
+  copyparty-fetch-plugins:
+    profiles:
+      - do-not-start
+    image: alpine
+    container_name: copyparty-fetch-plugins
+    restart: on-failure:3
+    user: "1000:1000"
+    volumes:
+      - *remote_plugins
+    entrypoint:
+      /bin/sh -c "
+      wget -O /remote_plugins/fpkg_vault.py https://github.com/kamaeff/fpkg-vault/releases/latest/download/fpkg_vault.py &&
+      chmod +x /remote_plugins/fpkg_vault.py
+      "
+
   copyparty:
     image: copyparty/dj:latest
     container_name: copyparty
+    restart: always
+    user: "1000:1000"
     depends_on:
       copyparty-update-config:
         condition: service_completed_successfully
@@ -30,22 +48,28 @@ services:
       - copyparty
     expose:
       - "3923"
-    restart: always
-    user: "1000:1000"
     volumes:
-      - *config
       - *fileshare
-      - *hist
+      - "${TMP_PHOTO_RECOVERY_PATH:?}:/photo-recovery"
 
-      - ./handlers:/handlers
+      - *config
+      - *hist
+      - *remote_plugins
+      - ./plugins:/plugins
 
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    tmpfs:
+      - /tmp
 
     environment:
       LD_PRELOAD: /usr/lib/libmimalloc-secure.so.NOPE # enable mimalloc by replacing "NOPE" with "2" for a nice speed-boost (will use twice as much ram)
-
       PYTHONUNBUFFERED: 1 # ensures log-messages are not delayed (but can reduce speed a tiny bit)
+
+      FPKGV_PS4_IP: "192.168.31.125"
+      FPKGV_CP_HOST: "http://drive.${SERVICE_DOMAIN:?}"
+      FPKGV_SEND_USERS: "#wmda,@acct"
+      FPKGV_SEND_NO_403: "true"
 
     stop_grace_period: 15s  # thumbnailer is allowed to continue finishing up for 10s after the shutdown signal
     healthcheck:
@@ -75,3 +99,8 @@ services:
       - apparmor=unconfined # insecure, https://github.com/CollaboraOnline/online/issues/13972
       - seccomp=./copyparty/collabora-seccomp-profile.json # unfortunately paths are resolved from main docker-compose.yml directory
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '2G'
