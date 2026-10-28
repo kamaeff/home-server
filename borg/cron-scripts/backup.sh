@@ -24,6 +24,7 @@ borg create -v --stats '/backups/home-server::app-data-{utcnow}' \
 
 borg create -v --stats '/backups/home-server::fileshare-{utcnow}' \
     --exclude="/fileshare/${FILESHARE_SUBPATH_1}/downloads" \
+    --exclude="/fileshare/${FILESHARE_SUBPATH_1}/games" \
     --exclude="/fileshare/${FILESHARE_SUBPATH_1}/music/staging" \
     --exclude="/fileshare/${FILESHARE_SUBPATH_1}/music/explore" \
     --exclude="/fileshare/${FILESHARE_SUBPATH_2}/ФИЛЬМЫ И СЕРИАЛЫ/" \
