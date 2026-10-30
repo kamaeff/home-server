@@ -273,13 +273,14 @@ feed.{$SERVICE_DOMAIN} {
 # }
 
 (memos) {
-    @api path /api/v1/* /o/r/*
-    handle @api {
-        import rproxy mortis:5231
-    }
-    handle {
+    # TEMPORARY DISABLE MORTIS AND TEST MOEMEMOS WITHOUT IT
+    # @api path /api/v1/* /o/r/*
+    # handle @api {
+    #     import rproxy mortis:5231
+    # }
+    # handle {
         import rproxy memos:5230
-    }
+    # }
 }
 
 memos.{$SERVICE_DOMAIN} {

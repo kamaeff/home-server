@@ -7,9 +7,9 @@ pre_eval:
   - filter: >
       req.Host matches `^memos\.[a-z]+\.[a-z]+$`
       && (
-        req.Method == "POST" && req.URL.Path matches `^/api/v1/memo/?$`
+        req.Method == "POST" && req.URL.Path matches `^/api/v1/memos?/?$`
         ||
-        req.Method == "PATCH" && req.URL.Path startsWith "/api/v1/memo/"
+        req.Method == "PATCH" && req.URL.Path matches `^/api/v1/memos?/`
       )
     apply:
       # - DisableBodyInspection()
