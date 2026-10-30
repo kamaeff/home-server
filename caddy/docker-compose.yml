@@ -27,7 +27,6 @@ services:
       slskd:
       transmission:
       aria2:
-      pyload:
       metube:
       pihole:
       scrutiny:

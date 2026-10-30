@@ -174,11 +174,6 @@ aria.{$SERVICE_DOMAIN} {
     }
 }
 
-pyload.{$SERVICE_DOMAIN} {
-    import tls
-    import rproxy http://pyload:8000
-}
-
 yt-dlp.{$SERVICE_DOMAIN} {
     import tls
     import rproxy metube:8081
