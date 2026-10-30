@@ -1,0 +1,7 @@
+name: local/vw
+pre_eval:
+  - filter: >
+      req.Host matches `^vw-ext\.[a-z]+\.[a-z]+$`
+      && req.URL.Path == "/identity/connect/token"
+    apply:
+      - RemoveInBandRuleByID(930120)

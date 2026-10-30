@@ -10,7 +10,7 @@ services:
     environment:
       - SIGNUPS_ALLOWED=false
       - PUSH_ENABLED=true
-      - EXPERIMENTAL_CLIENT_FEATURE_FLAGS=ssh-key-vault-item,ssh-agent-v2
+      - EXPERIMENTAL_CLIENT_FEATURE_FLAGS=ssh-agent-v2
       - LOG_TIMESTAMP_FORMAT=%Y-%m-%d %H:%M:%S.%3f%z
     env_file: vw.env
     volumes:
