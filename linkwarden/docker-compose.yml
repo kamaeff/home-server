@@ -5,7 +5,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@linkwarden-postgres:5432/postgres
     restart: always
-    image: ghcr.io/linkwarden/linkwarden:v2.14.1
+    image: ghcr.io/linkwarden/linkwarden:v2.16.3
     expose:
       - '3000'
     volumes:
@@ -29,7 +29,7 @@ services:
 
   linkwarden-meilisearch:
     container_name: linkwarden-meilisearch
-    image: getmeili/meilisearch:v1.12.8
+    image: getmeili/meilisearch:v1.13.3
     restart: always
     env_file:
       - .env
@@ -39,3 +39,6 @@ services:
       - linkwarden-back
     expose:
       - '7700'
+    # command:
+    #   - meilisearch
+    #   - --experimental-dumpless-upgrade
