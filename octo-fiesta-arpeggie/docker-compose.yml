@@ -20,9 +20,9 @@ services:
 
   arpeggi-tmp-octo-fiesta:
 #     # 415198f is releases/v0.6
-#    image: ghcr.io/v1ck3s/octo-fiesta:dev
+    image: ghcr.io/v1ck3s/octo-fiesta:dev
 #    build: https://github.com/kamaeff/octo-fiesta.git#feature/refactor-basedownloadservice
-    build: ../../programming/octo-fiesta
+    # build: ../../programming/octo-fiesta
     container_name: arpeggi-tmp-octo-fiesta
     user: 1000:1000
     restart: always
