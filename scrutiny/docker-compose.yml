@@ -2,7 +2,7 @@ services:
   scrutiny:
     restart: always
     container_name: scrutiny
-    image: ghcr.io/analogj/scrutiny:v0.9-omnibus
+    image: ghcr.io/analogj/scrutiny:v0.10-omnibus
     cap_add:
       - SYS_RAWIO
       - SYS_ADMIN
