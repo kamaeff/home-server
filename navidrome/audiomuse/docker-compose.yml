@@ -1,17 +1,4 @@
 services:
-  audiomuse-redis:
-    image: redis:7-alpine
-    container_name: audiomuse-redis
-    environment:
-      TZ: "${TZ:-UTC}"
-    networks:
-      - audiomuse-back
-    expose:
-      - "6379"
-    volumes:
-      - "${APP_DATA:?}/audiomuse/redis:/data"
-    restart: always
-
   audiomuse-postgres:
     image: postgres:15-alpine
     container_name: audiomuse-postgres
@@ -42,7 +29,6 @@ services:
     tmpfs:
       - "${TEMP_DIR?}"
     depends_on:
-      - audiomuse-redis
       - audiomuse-postgres
     restart: always
 
@@ -61,7 +47,6 @@ services:
     tmpfs:
       - "${TEMP_DIR?}"
     depends_on:
-      - audiomuse-redis
       - audiomuse-postgres
     restart: always
 #    deploy:
