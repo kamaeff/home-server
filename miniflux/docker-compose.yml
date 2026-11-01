@@ -1,6 +1,6 @@
 services:
   miniflux-server:
-    image: miniflux/miniflux:2.3.1
+    image: miniflux/miniflux:2.3.4
     container_name: miniflux-server
     depends_on:
       miniflux-db:
