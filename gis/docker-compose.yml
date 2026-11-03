@@ -62,12 +62,6 @@ services:
       - |
         set -e
         mkdir -p /keys
-        if [ ! -f /keys/jwt-private-key.pem ] || [ ! -f /keys/jwt-public-key.pem ]; then
-          command -v openssl >/dev/null 2>&1 || apk add --no-cache openssl
-          openssl genpkey -algorithm RSA -out /keys/jwt-private-key.pem
-          openssl rsa -pubout -in /keys/jwt-private-key.pem -out /keys/jwt-public-key.pem
-          chmod 644 /keys/jwt-private-key.pem /keys/jwt-public-key.pem
-        fi
         if [ ! -f /keys/ai-encryption-key.txt ]; then
           command -v openssl >/dev/null 2>&1 || apk add --no-cache openssl
           openssl rand -base64 32 > /keys/ai-encryption-key.txt
@@ -81,6 +75,7 @@ services:
     #image: tess1o/geopulse-backend:${GEOPULSE_VERSION}-native-compat
     #image: ghcr.io/tess1o/geopulse-backend:${GEOPULSE_VERSION}-native-compat
     container_name: geopulse-backend
+    init: true
     mem_limit: 512m
     mem_reservation: 128m
     restart: always
@@ -94,13 +89,14 @@ services:
     volumes:
       - ${APP_DATA:?}/geopulse/keys:/app/keys
       - ${APP_DATA:?}/geopulse/import-drop:/data/geopulse-import
+      - ${APP_DATA:?}/geopulse/backups:/backups
     depends_on:
       geopulse-keygen:
         condition: service_completed_successfully
       geopulse-postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/health || exit 1"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/system/health"]
       interval: 3s
       timeout: 2s
       retries: 20
@@ -123,19 +119,20 @@ services:
         condition: service_healthy
 
   geopulse-postgres:
-    image: postgis/postgis:17-3.5
+    image: postgis/postgis:18-3.6
     #for ARM64 use the below image
     #image: imresamu/postgis:17-3.5-alpine
     container_name: geopulse-postgres
     restart: always
     networks:
       - geopulse-back
+    shm_size: 256mb
     environment:
       POSTGRES_USER: ${GEOPULSE_POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${GEOPULSE_POSTGRES_PASSWORD}
       POSTGRES_DB: ${GEOPULSE_POSTGRES_DB}
     volumes:
-      - ${APP_DATA:?}/geopulse/postgres-data:/var/lib/postgresql/data
+      - ${APP_DATA:?}/geopulse/postgres-data:/var/lib/postgresql
     # Conservative PostgreSQL settings optimized for minimal resource usage
     # Suitable for small deployments and idle GPS tracking workloads
     command: >
