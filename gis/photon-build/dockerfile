@@ -1,5 +1,5 @@
 FROM eclipse-temurin:25-alpine
-RUN mkdir /opt/app /import && apk add --no-cache zstd && wget -O /opt/app/photon.jar https://github.com/komoot/photon/releases/download/1.1.0/photon-1.1.0.jar
+RUN mkdir /opt/app /import && apk add --no-cache zstd && wget -O /opt/app/photon.jar https://github.com/komoot/photon/releases/download/1.3.0/photon-1.3.0.jar
 
 COPY entrypoint.sh /bin/entrypoint.sh
 RUN chmod +x /bin/entrypoint.sh
