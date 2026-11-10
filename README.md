@@ -118,9 +118,49 @@ systemctl cat fstrim.service
 S.M.A.R.T. monitoring. Currently done by Scrutiny with telegram alerts, but I may decide to switch to something different: smartd with custom scripts or [beszel](https://github.com/henrygd/beszel). 
 
 
+### zram swap
+`sudo apt install systemd-zram-generator`
+
+`sudo nano /etc/systemd/zram-generator.conf`
+```
+[zram0]
+zram-size = ram / 2
+compression-algorithm = zstd
+swap-priority = 100
+fs-type = swap
+```
+other config locations listed in `man zram-generator.conf` can break this
+on Debian look into `/usr/lib/systemd/zram-generator.conf`
+
+`sudo nano /etc/sysctl.d/99-vm-zram-parameters.conf`
+```
+# https://wiki.archlinux.org/title/Zram#Optimizing_swap_on_zram
+vm.swappiness = 180
+vm.watermark_boost_factor = 0
+vm.watermark_scale_factor = 125
+vm.page-cluster = 0
+```
+
+see also:
+https://linuxblog.io/linux-performance-almost-always-add-swap-part2-zram/#Adjusting_Kernel_parameters_for_ZRAM_instead_of_SWAP
+
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl start /dev/zram0
+
+sudo sysctl --system
+
+sudo systemctl status dev-zram0.swap
+```
+
+Check with `sudo swapon --show`. May require rebooting though shouldn't.
+
+
+
 ### Logging
 To prevent SSD wearout logs are stored in volatile memory only.
-In the future I may decide to switch to inexpensible thumb drive or cloud solutions like [betterstack](https://betterstack.com/docs/logs/syslog-setup/).
+In the future I may decide to switch to cheap thumb drive or cloud solutions like [betterstack](https://betterstack.com/docs/logs/syslog-setup/).
 
 #### Volatile journald logs
 ```bash
